@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Signature Plugin</title>
+	<!-- Styles -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		* {
+			font-size: 16px;
+			font-family: Arial;
+		}
+		.site-title {
+			margin: 1em 0;
+		}
+		.center {
+			text-align: center;
+		}
+		td {
+			padding-top: 8px !important;
+			padding-bottom: 8px !important;
+		}
+		li {
+			margin: 8px 0;
+		}
+	</style>
+</head>
+<body>
+<!-- Body Content -->
+<div class="js-signature"></div>
+<div class="container">	
+	<div class="row">
+		<div class="col-xs-12">
+			<h3>Complete Example</h3>
+			<p>Sign Below:</p>
+			<div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
+			<p><button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear Canvas</button>&nbsp;<button id="saveBtn" class="btn btn-default" onclick="saveSignature();" disabled>Save Signature</button></p>
+			<div id="signature">
+				<p><em>Your signature will appear here when you click "Save Signature"</em></p>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Scripts -->
+<script src="jquery.min.js"></script>
+<script src="jq-signature.js"></script>
+<script>
+	$(document).on('ready', function() {
+		if ($('.js-signature').length) {
+			$('.js-signature').jqSignature();
+		}
+	});
+	/*
+	* Demo
+	*/
+	function clearCanvas() {
+		$('#signature').html('<p><em>Your signature will appear here when you click "Save Signature"</em></p>');
+		$('.js-signature').eq(1).jqSignature('clearCanvas');
+		$('#saveBtn').attr('disabled', true);
+	}
+	function saveSignature() {
+		$('#signature').empty();
+		var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
+		var img = $('<img>').attr('src', dataUrl);
+		$('#signature').append($('<p>').text("Here's your signature:"));
+		$('#signature').append(img);
+	}
+	$('.js-signature').eq(1).on('jq.signature.changed', function() {
+		$('#saveBtn').attr('disabled', false);
+	});
+</script>
+</body>
+</html>
