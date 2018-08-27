@@ -8,6 +8,6 @@ class visitor(models.Model):
     purpose = models.TextField(max_length = 200)
     login_time = models.DateTimeField('Enter time',auto_now_add=True)
     logout_time = models.DateTimeField('Exit time',auto_now_add=True)
-	signature = models.ImageField(upload_to='img')
+    signature = models.ImageField(upload_to='img',default='')
     def __str__(self):
         return self.name

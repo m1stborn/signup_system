@@ -22,5 +22,5 @@ def new(request):
 
 def getImg(request):
 	file_content = ContentFile(request.FILES['img'].read())
-    img = ImageStore(name = request.FILES['img'].name, img = request.FILES['img'])
-    img.save()
+	img = ImageStore(name = request.FILES['img'].name, img = request.FILES['img'])
+	img.save()
