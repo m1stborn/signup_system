@@ -19,3 +19,8 @@ def new(request):
 		new.save()
 		# return redirect('new')
 	return render(request, 'trips/enter.html',{})
+
+def getImg(request):
+	file_content = ContentFile(request.FILES['img'].read())  
+    img = ImageStore(name = request.FILES['img'].name, img = request.FILES['img'])  
+    img.save()
