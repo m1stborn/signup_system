@@ -68,14 +68,14 @@ p=0;Ei(69,e|0,28,i|0,r|0);Be=p;p=0;if(Be&1)break;p=0;Ge(45,u|0,18,f|0,a|0,t|0,n|
   <body>
     <div id="app">
       <div class="sidebar">
-  <!--       <section class="cameras">
+<!--         <section class="cameras">
           <h2>Cameras</h2>
           <ul>
             <li v-if="cameras.length === 0" class="empty">No cameras found</li>
             <li v-for="camera in cameras">
-              <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active">{{ formatName(camera.name) }}</span>
+              <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active">{ formatName(camera.name) }</span>
               <span v-if="camera.id != activeCameraId" :title="formatName(camera.name)">
-                <a @click.stop="selectCamera(camera)">{{ formatName(camera.name) }}</a>
+                <a @click.stop="selectCamera(camera)">{ formatName(camera.name) }}</a>
               </span>
             </li>
           </ul>
@@ -86,8 +86,13 @@ p=0;Ei(69,e|0,28,i|0,r|0);Be=p;p=0;if(Be&1)break;p=0;Ge(45,u|0,18,f|0,a|0,t|0,n|
             <li class="empty">No scans yet</li>
           </ul>
           <transition-group name="scans" tag="ul">
-            <li v-for="scan in scans" :key="scan.date" :title="scan.content">{{ scan.content }}</li>
+            <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
+            </li>
           </transition-group>
+<!--           <form>
+            <input type = "txt" name = "code" value = "{scan.content}">
+            <input type = "submit">
+            </form> -->
         </section>
       </div>
       <div class="preview-container">
@@ -96,13 +101,15 @@ p=0;Ei(69,e|0,28,i|0,r|0);Be=p;p=0;if(Be&1)break;p=0;Ge(45,u|0,18,f|0,a|0,t|0,n|
     </div>
     <script type="text/javascript">
       var app = new Vue({
-  el: '#app',
-  data: {
-    scanner: null,
-    activeCameraId: null,
-    cameras: [],
-    scans: []
-  },
+        delimiters: ['{', '}'],
+        el: '#app',
+        data: {
+          scanner: null,
+          activeCameraId: null,
+          cameras: [],
+          scans: []
+        },
+
   mounted: function () {
     var self = this;
     self.scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5 });

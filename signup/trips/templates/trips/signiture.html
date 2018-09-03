@@ -6,10 +6,9 @@
 	<script src="{% static "jq-signature.js" %}"></script>
 	<script src="{% static "jq-signature.min.js" %}"></script>
 </head>
-<body>
-<!-- Body Content -->
+<!-- <body>Body Content
 <div class="js-signature"></div>
-<div class="container">	
+<div class="js-signature">	
 	<div class="row">
 		<div class="col-xs-12">
 			<h3>Complete Example</h3>
@@ -21,10 +20,37 @@
 			</div>
 		</div>
 	</div>
+</div> -->
+
+
+
+<body>
+<!-- Body Content -->
+<div class="container">
+
+
+
+	<div class="js-signature" data-width="0" data-height="0"></div>
+
+
+	<div class="row">
+		<div class="col-xs-12">
+			<h3>Complete Example</h3>
+			<p>Sign Below:</p>
+			<div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
+			<p>
+				<button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear Canvas</button>&nbsp;
+				<button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Save Signature</button></p>
+			<div id="signature">
+				<p><em>Your signature will appear here when you click "Save Signature"</em></p>
+			</div>
+		</div>
+	</div>
+
 </div>
 <!-- Scripts -->
-<script src="jquery.min.js"></script>
-<script src="jq-signature.js"></script>
+<script src="{% static "jquery.min.js" %}"></script>
+<script src="{% static "jq-signature.js" %}"></script>
 <script>
 	$(document).on('ready', function() {
 		if ($('.js-signature').length) {
@@ -37,17 +63,27 @@
 	function clearCanvas() {
 		$('#signature').html('<p><em>Your signature will appear here when you click "Save Signature"</em></p>');
 		$('.js-signature').eq(1).jqSignature('clearCanvas');
-		$('#saveBtn').attr('disabled', true);
+		// $('#saveBtn').attr('disabled', true);
 	}
 	function saveSignature() {
 		$('#signature').empty();
 		var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
 		var img = $('<img>').attr('src', dataUrl);
 		$('#signature').append($('<p>').text("Here's your signature:"));
-		$('#signature').append(img);
+		// $('#signature').append(img);
+        $.post("",
+        {
+        	'url': dataUrl,
+        	'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        function(data,status){
+           	alert("Data: "  + "\nStatus: ");
+        });
 	}
+
+	
 	$('.js-signature').eq(1).on('jq.signature.changed', function() {
-		$('#saveBtn').attr('disabled', false);
+		// $('#saveBtn').attr('disabled', false);
 	});
 </script>
 </body>

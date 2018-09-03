@@ -13,12 +13,8 @@
 
 
 	<div>
-		name:<input type="text" id="Name" name="Name" required="required" />
-	</div>
-	<div>
+		name:<input type="text" id="Name" name="Name" />
 		company:<input type="text" id="Company" name="Company" />
-	</div>
-	<div>
 		purpose:<input type="text" id="Purpose" name="Purpose" />
 	</div>
 	<div class="js-signature" data-width="0" data-height="0"></div>
@@ -26,13 +22,14 @@
 
 	<div class="row">
 		<div class="col-xs-12">
+			<h3>Complete Example</h3>
 			<p>Sign Below:</p>
 			<div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
 			<p>
-				<button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
-				<button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Save</button></p>
+				<button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear Canvas</button>&nbsp;
+				<button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Save Signature</button></p>
 			<div id="signature">
-				<p><em>Your signature will appear here when you click "Save"</em></p>
+				<p><em>Your signature will appear here when you click "Save Signature"</em></p>
 			</div>
 		</div>
 	</div>
@@ -58,14 +55,12 @@
 	function saveSignature() {
 		$('#signature').empty();
 		var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
+		var img = $('<img>').attr('src', dataUrl);
+		$('#signature').append($('<p>').text("Here's your signature:"));
+		// $('#signature').append(img);
 		var name = document.getElementById("Name").value
 		var company = document.getElementById("Company").value
 		var purpose = document.getElementById("Purpose").value
-		if (dataUrl=="" || name=="" || company=="" || purpose=="")
-		{
-			alert("Please Fill All Required Field");
-			return false;
-		}
         $.post("",
         {
         	'name': name,
@@ -75,20 +70,14 @@
         	'csrfmiddlewaretoken': '{{ csrf_token }}',
         },
         function(data,status){
-           	alert("success");
+           	alert("Data: "  + "\nStatus: ");
         });
-        var time = 0;
-  		setInterval(function() {
-    		if(time > 0) {
-      			time--;
-    		} else {
-      			location.href="/Q_in"
-    		}
-  		},1000)
 	}
-	// $('.js-signature').eq(1).on('jq.signature.changed', function() {
-	// 	// $('#saveBtn').attr('disabled', false);
-	// });
+
+	
+	$('.js-signature').eq(1).on('jq.signature.changed', function() {
+		// $('#saveBtn').attr('disabled', false);
+	});
 </script>
 </body>
 </html>
