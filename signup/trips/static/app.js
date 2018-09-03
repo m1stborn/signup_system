@@ -1,7 +1,7 @@
 var app = new Vue({
+  delimiters: ['{', '}'],
   el: '#app',
   data: {
-    delimiters: ['{', '}'],
     scanner: null,
     activeCameraId: null,
     cameras: [],

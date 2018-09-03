@@ -1,0 +1,34 @@
+<!-- form -->
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<!-- <form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="ok">
+</form> -->
+<form method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+    <div class="fieldWrapper">
+        {{ form.Name.errors }}
+        <label for="id_subject">Name:</label>
+        {{ form.Name }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.Company.errors }}
+        <label for="id_message">Company:</label>
+        {{ form.Company }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.Purpose.errors }}
+        <label for="id_sender">Purpose:</label>
+        {{ form.Purpose }}
+    </div>
+    <p><input type="submit" value="Send message" /></p>
+</form>
+</body>
+</html>
