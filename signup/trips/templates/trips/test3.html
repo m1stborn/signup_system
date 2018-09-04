@@ -27,38 +27,10 @@
       <div class="preview-container">
         <video id="preview"></video>
       </div>
-      <button onclick="myFunction()">Okay</button>
+      <!-- <button onclick="myFunction()">Okay</button> -->
       <p id="demo"></p>
     </div>
-    
-    <script>
-    function myFunction() {
-      var key = document.getElementsByTagName("LI")[0].innerHTML
-      // var y = x[0].innerHTML
-      // alert(x[0].id)//htmlelement
-      // alert(y)
-      // alert(typeof(y))
-      // alert(typeof(x))
-      // // var x = document.getElementsById("ya");
-      // document.getElementById("demo").innerHTML = x[0].innerHTML;
-      $.post("",
-      {
-        'key': key,
-        'csrfmiddlewaretoken': '{{ csrf_token }}',
-      },
-      function(data,status){
-            alert("success");
-      });
-      var time = 0;
-      setInterval(function() {
-        if(time > 0) {
-            time--;
-        } else {
-            location.href="/"
-        }
-      },1000)
-    }
-    </script>
+
     <script type="text/javascript">
 
       var app = new Vue({
@@ -75,6 +47,22 @@
           self.scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5 });
           self.scanner.addListener('scan', function (content, image) {
             self.scans.unshift({ date: +(Date.now()), content: content });
+            $.post("",
+              {
+                'key': content,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+              },
+              function(data,status){
+                    alert("success");
+              });
+              var time = 0;
+              setInterval(function() {
+                if(time > 0) {
+                    time--;
+                } else {
+                    location.href="/"
+                }
+              },1000)
           });
           Instascan.Camera.getCameras().then(function (cameras) {
             self.cameras = cameras;
@@ -87,6 +75,7 @@
           }).catch(function (e) {
             console.error(e);
           });
+
         },
         methods: {
           // formatName: function (name) {
@@ -109,7 +98,6 @@
           //       this.scans = data;
           //   });
           // },
-
         }
       });
 

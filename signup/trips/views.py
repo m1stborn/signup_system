@@ -23,11 +23,13 @@ def new(request):
 		getImg = visitor(signature = url, name=Name, company=Company, purpose=Purpose)
 		getImg.save()
 	all_objects = visitor.objects.all().order_by('name')
+	print(request.user)
 	return render(request, 'trips/enter.html',{'all_obbjects':all_objects})
 
 def Q_in(request):
 	print("come")
 	if request.method == "POST":
+		print(request.user)
 		print(request.POST['key'])
 	return render(request, 'trips/test3.html',{})
 
