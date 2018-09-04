@@ -3,11 +3,10 @@ from django.shortcuts import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import visitor
 from datetime import datetime
-from jsignature.utils import draw_signature
 from .forms import VisitorForm
 from django.template import RequestContext
+import django.utils.timezone as timezone
 import json
-from .forms import SignatureForm
 
 # Create your views here.
 
@@ -20,16 +19,18 @@ def new(request):
 		Company = request.POST['company']
 		Purpose = request.POST['purpose']
 		url = request.POST['url']
+		visit_area = request.POST['visit_area']
 		getImg = visitor(signature = url, name=Name, company=Company, purpose=Purpose)
 		getImg.save()
-	return render(request, 'trips/enter.html',{})
+	all_objects = visitor.objects.all().order_by('name')
+	return render(request, 'trips/enter.html',{'all_obbjects':all_objects})
 
 def Q_in(request):
 	print("come")
-	if request.method == "GET":
-		print(request.GET)
+	if request.method == "POST":
+		print(request.POST['key'])
 	return render(request, 'trips/test3.html',{})
-	
+
 def Q_out(request):
 	print("out")
 	if request.method == "GET":
@@ -46,7 +47,7 @@ def Q_out(request):
 # 		getImg.save()
 # 	return render(request, 'trips/byid.html',{})
 
-# def new(request):
+# def new(request):ya
 #     # if this is a POST request we need to process the form data
 #     if request.method == 'POST':
 #         # create a form instance and populate it with data from the request:

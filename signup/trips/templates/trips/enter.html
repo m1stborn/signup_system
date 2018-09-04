@@ -13,29 +13,47 @@
 
 
 	<div>
-		name:<input type="text" id="Name" name="Name" required="required" />
+		name:<input type="text" id="Name" name="Name" list="namelist" />
+		<datalist id="namelist">
+			{% for objects in all_objects %}
+				<option>{{ objects.name }}</option>
+			{% endfor %}
+		</datalist>
 	</div>
 	<div>
-		company:<input type="text" id="Company" name="Company" />
+		company:<input type="text" id="Company" name="Company" list="companylist" />
+		<datalist id="companylist">
+			{% for objects in all_objects %}
+				<option>{{ objects.company }}</option>
+			{% endfor %}
+		</datalist>
 	</div>
 	<div>
-		purpose:<input type="text" id="Purpose" name="Purpose" />
+		purpose:<input type="text" id="Purpose" name="Purpose" list="purposelist"/>
+		<datalist id="purposelist">
+			{% for objects in all_objects %}
+				<option>{{ objects.purpose }}</option>
+			{% endfor %}
+		</datalist>
 	</div>
-	<div class="js-signature" data-width="0" data-height="0"></div>
 
-
-	<div class="row">
-		<div class="col-xs-12">
-			<p>Sign Below:</p>
-			<div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
-			<p>
-				<button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
-				<button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Save</button></p>
-			<div id="signature">
-				<p><em>Your signature will appear here when you click "Save"</em></p>
-			</div>
-		</div>
+	<div>
+		Visit Area:
+		<select id="Visit_area">
+			<option value="" selected></option>
+  			<option value="one">one</option>
+  			<option value="two">two</option>
+  			<option value="three">three</option>
+  			<option value="four">four</option>
+  			<option value="five">five</option>
+		</select>
 	</div>
+
+	<div>Sign Below:</div>
+	<div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
+	<button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
+	<button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Save</button>
+
 
 </div>
 <!-- Scripts -->
@@ -51,17 +69,19 @@
 	* Demo
 	*/
 	function clearCanvas() {
-		$('#signature').html('<p><em>Your signature will appear here when you click "Save Signature"</em></p>');
-		$('.js-signature').eq(1).jqSignature('clearCanvas');
+		// $('#signature').html('<p><em>Your signature will appear here when you click "Save Signature"</em></p>');
+		$('.js-signature').eq(0).jqSignature('clearCanvas');
 		// $('#saveBtn').attr('disabled', true);
 	}
 	function saveSignature() {
-		$('#signature').empty();
-		var dataUrl = $('.js-signature').eq(1).jqSignature('getDataURL');
+		// $('#signature').empty();
+		var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
 		var name = document.getElementById("Name").value
 		var company = document.getElementById("Company").value
 		var purpose = document.getElementById("Purpose").value
-		if (dataUrl=="" || name=="" || company=="" || purpose=="")
+		var visit_area = document.getElementById("Visit_area").value
+
+		if (dataUrl=="" || name=="" || company=="" || purpose==""||visit_area=="")
 		{
 			alert("Please Fill All Required Field");
 			return false;
@@ -72,6 +92,7 @@
         	'company': company,
         	'purpose': purpose,
         	'url': dataUrl,
+        	'visit_area': visit_area,
         	'csrfmiddlewaretoken': '{{ csrf_token }}',
         },
         function(data,status){
