@@ -4,6 +4,7 @@
   <head>
     <title>Instascan &ndash; Demo</title>
     <script type="text/javascript" src="{% static "adapter.min.js" %}"></script>
+    <script src="{% static "jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "vue.min.js" %}"></script>
     <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
   </head>
@@ -13,28 +14,53 @@
       <div class="sidebar">
         <section class="scans">
           <h2>Scans</h2>
-          <form action="" method="get">
-
-
           <ul v-if="scans.length === 0">
             <li class="empty">No scans yet</li>
           </ul>
           <transition-group name="scans" tag="ul">
             <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
-            <input type="hidden" name="name" value="scan.content"><br>
             </li>
           </transition-group>
-          </form>
-          <button v-on:click.prevent="post"> {{post}}</button>
         </section>
       </div>
+
       <div class="preview-container">
         <video id="preview"></video>
       </div>
+      <button onclick="myFunction()">Okay</button>
+      <p id="demo"></p>
     </div>
     
-
+    <script>
+    function myFunction() {
+      var key = document.getElementsByTagName("LI")[0].innerHTML
+      // var y = x[0].innerHTML
+      // alert(x[0].id)//htmlelement
+      // alert(y)
+      // alert(typeof(y))
+      // alert(typeof(x))
+      // // var x = document.getElementsById("ya");
+      // document.getElementById("demo").innerHTML = x[0].innerHTML;
+      $.post("",
+      {
+        'key': key,
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
+      },
+      function(data,status){
+            alert("success");
+      });
+      var time = 0;
+      setInterval(function() {
+        if(time > 0) {
+            time--;
+        } else {
+            location.href="/"
+        }
+      },1000)
+    }
+    </script>
     <script type="text/javascript">
+
       var app = new Vue({
         delimiters: ['{', '}'],
         el: '#app',
@@ -63,20 +89,27 @@
           });
         },
         methods: {
-          formatName: function (name) {
-            return name || '(unknown)';
-          },
-          selectCamera: function (camera) {
-            this.activeCameraId = camera.id;
-            this.scanner.start(camera);
-          },
-          post: function(){
-            this.$http.post('',{
-              scans: this.scans
-            }).then(function(data){
-              console.log(data);
-            });
-          }
+          // formatName: function (name) {
+          //   return name || '(unknown)';
+          // },
+          // selectCamera: function (camera) {
+          //   this.activeCameraId = camera.id;
+          //   this.scanner.start(camera);
+          // },
+          // post: function(){
+          //   this.$http.post('',{
+          //     scans: this.scans
+          //   }).then(function(data){
+          //     console.log(data);
+          //   });
+          // }
+          // loadUsers: function() {
+          //   this.$http.get('', function(data){
+          //       console.log(scans);
+          //       this.scans = data;
+          //   });
+          // },
+
         }
       });
 
