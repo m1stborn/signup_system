@@ -10,7 +10,7 @@ class visitor(models.Model):
     signature = models.URLField()
     key = models.TextField(max_length=200, default=0)
     is_out = models.BooleanField(default=True)
-    login_time = models.DateTimeField(default=0)
-    logout_time = models.DateTimeField(default=0)
+    login_time = models.DateTimeField(default=timezone.localtime())
+    logout_time = models.DateTimeField(default=timezone.localtime())
     def __str__(self):
         return self.name
