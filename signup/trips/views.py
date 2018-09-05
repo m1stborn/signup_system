@@ -40,6 +40,10 @@ def Q_out(request):
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
 		queryset = visitor.objects.filter(key=Key, is_out=False).order_by('-login_time')
+		# a = visitor.objects.filter(login_time__year='2018')
+		# print(a)
+		# b = visitor.objects.filter(login_time__year='2018', login_time__month='09', login_time__date='')
+		# print(b)
 		print(queryset[0])
 		visitor.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
 	return render(request, 'trips/test3.html',{})
