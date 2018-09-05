@@ -1,106 +1,91 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Instascan &ndash; Demo</title>
     <script type="text/javascript" src="{% static "adapter.min.js" %}"></script>
     <script src="{% static "jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "vue.min.js" %}"></script>
     <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
-  </head>
-  <body>
+</head>
+
+<body>
 
     <div id="app">
-      <div class="sidebar">
-        <section class="scans">
-          <h2>Scans</h2>
-          <ul v-if="scans.length === 0">
-            <li class="empty">No scans yet</li>
-          </ul>
-          <transition-group name="scans" tag="ul">
-            <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
-            </li>
-          </transition-group>
-        </section>
-      </div>
+        <div class="sidebar">
+            <section class="scans">
+                <h2>Scans</h2>
+                <ul v-if="scans.length === 0">
+                    <li class="empty">No scans yet</li>
+                </ul>
+                <transition-group name="scans" tag="ul">
+                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
+                    </li>
+                </transition-group>
+            </section>
+        </div>
 
-      <div class="preview-container">
-        <video id="preview"></video>
-      </div>
-      <!-- <button onclick="myFunction()">Okay</button> -->
-      <p id="demo"></p>
+        <div class="preview-container">
+            <video id="preview"></video>
+        </div>
+        <p id="demo"></p>
     </div>
 
     <script type="text/javascript">
+        var app = new Vue({
+            delimiters: ['{', '}'],
+            el: '#app',
+            data: {
+                scanner: null,
+                activeCameraId: null,
+                cameras: [],
+                scans: []
+            },
+            mounted: function() {
+                var self = this;
+                var pk = document.getElementById("myVar");
+                self.scanner = new Instascan.Scanner({
+                    video: document.getElementById('preview'),
+                    scanPeriod: 5
+                });
+                self.scanner.addListener('scan', function(content, image) {
+                    self.scans.unshift({
+                        date: +(Date.now()),
+                        content: content
+                    });
+                    $.post("", {
+                            'key': content,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        },
+                        function(data, status) {
+                            alert("success");
+                        });
+                    var time = 0;
+                    setInterval(function() {
+                        if (time > 0) {
+                            time--;
+                        } else {
+                            location.href = "/"
+                        }
+                    }, 1000)
+                });
+                Instascan.Camera.getCameras().then(function(cameras) {
+                    self.cameras = cameras;
+                    if (cameras.length > 0) {
+                        self.activeCameraId = cameras[0].id;
+                        self.scanner.start(cameras[0]);
+                    } else {
+                        console.error('No cameras found.');
+                    }
+                }).catch(function(e) {
+                    console.error(e);
+                });
 
-      var app = new Vue({
-        delimiters: ['{', '}'],
-        el: '#app',
-        data: {
-          scanner: null,
-          activeCameraId: null,
-          cameras: [],
-          scans: []
-        },
-        mounted: function () {
-          var self = this;
-          self.scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5 });
-          self.scanner.addListener('scan', function (content, image) {
-            self.scans.unshift({ date: +(Date.now()), content: content });
-            $.post("",
-              {
-                'key': content,
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-              },
-              function(data,status){
-                    alert("success");
-              });
-              var time = 0;
-              setInterval(function() {
-                if(time > 0) {
-                    time--;
-                } else {
-                    location.href="/"
-                }
-              },1000)
-          });
-          Instascan.Camera.getCameras().then(function (cameras) {
-            self.cameras = cameras;
-            if (cameras.length > 0) {
-              self.activeCameraId = cameras[0].id;
-              self.scanner.start(cameras[0]);
-            } else {
-              console.error('No cameras found.');
-            }
-          }).catch(function (e) {
-            console.error(e);
-          });
-
-        },
-        methods: {
-          // formatName: function (name) {
-          //   return name || '(unknown)';
-          // },
-          // selectCamera: function (camera) {
-          //   this.activeCameraId = camera.id;
-          //   this.scanner.start(camera);
-          // },
-          // post: function(){
-          //   this.$http.post('',{
-          //     scans: this.scans
-          //   }).then(function(data){
-          //     console.log(data);
-          //   });
-          // }
-          // loadUsers: function() {
-          //   this.$http.get('', function(data){
-          //       console.log(scans);
-          //       this.scans = data;
-          //   });
-          // },
-        }
-      });
-
+            },
+            methods: {}
+        });
     </script>
-  </body>
+</body>
+
 </html>

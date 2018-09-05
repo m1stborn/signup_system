@@ -5,10 +5,12 @@ import django.utils.timezone as timezone
 class visitor(models.Model):
     name = models.TextField(max_length = 200)
     company = models.TextField(max_length = 200)
-    visit_area = models.TextField(max_length = 200)
     purpose = models.TextField(max_length = 200)
-    login_time = models.DateTimeField('Enter time',default=timezone.localtime())
-    logout_time = models.DateTimeField(auto_now_add=True)
+    visit_area = models.TextField(max_length = 200)
     signature = models.URLField()
+    key = models.TextField(max_length=200, default=0)
+    is_out = models.BooleanField(default=True)
+    login_time = models.DateTimeField(default=0)
+    logout_time = models.DateTimeField(default=0)
     def __str__(self):
         return self.name

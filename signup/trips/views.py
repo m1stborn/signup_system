@@ -7,6 +7,7 @@ from .forms import VisitorForm
 from django.template import RequestContext
 import django.utils.timezone as timezone
 import json
+import django.utils.timezone as timezone
 
 # Create your views here.
 
@@ -15,29 +16,43 @@ def home(request):
 
 def new(request):
 	if request.method == "POST":
+		# print(request.POST)
 		Name = request.POST['name']
 		Company = request.POST['company']
 		Purpose = request.POST['purpose']
-		url = request.POST['url']
-		visit_area = request.POST['visit_area']
-		getImg = visitor(signature = url, name=Name, company=Company, purpose=Purpose)
+		Url = request.POST['url']
+		Visit_area = request.POST['visit_area']
+		Login_time = timezone.localtime()
+		Key = request.POST['key']
+		Is_out = False
+		getImg = visitor(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Url, login_time=Login_time, key=Key, is_out=Is_out)
 		getImg.save()
+		# thisobject = visitor.objects.get(login_time=Login_time).pk
+		# print(thisobject)
+		# return render(request, 'trips/test3.html',{'object':thisobject})
 	all_objects = visitor.objects.all().order_by('name')
-	print(request.user)
-	return render(request, 'trips/enter.html',{'all_obbjects':all_objects})
-
-def Q_in(request):
-	print("come")
-	if request.method == "POST":
-		print(request.user)
-		print(request.POST['key'])
-	return render(request, 'trips/test3.html',{})
+	# print(visitor.objects.all().count())
+	return render(request, 'trips/big.html',{'all_obbjects':all_objects})
 
 def Q_out(request):
 	print("out")
-	if request.method == "GET":
-		print(request.GET)
+	if request.method == "POST":
+		Logout_time = timezone.localtime()
+		Key = request.POST['key']
+		queryset = visitor.objects.filter(key=Key, is_out=False).order_by('-login_time')
+		print(queryset[0])
+		visitor.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
 	return render(request, 'trips/test3.html',{})
+
+
+# def Q_in(request):
+# 	print("come")
+# 	if request.method == "POST":
+# 		print(request.POST['pk'])
+# 		print(request.POST['key'])
+# 	return render(request, 'trips/test3.html',{})
+
+
 
 # def getImg(request):
 # 	if request.method == "POST":

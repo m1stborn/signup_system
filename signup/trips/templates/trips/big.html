@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="{% static "jquery.min.js"%}"></script>
+    <script src="{% static "jq-signature.js"%}"></script>
+    <script src="{% static "jq-signature.min.js"%}"></script>
+    <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
+    <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
+    <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            name:
+            <input type="text" id="Name" name="Name" list="namelist" />
+            <datalist id="namelist">
+                {% for objects in all_objects %}
+                <option>{{ objects.name }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div>
+            company:
+            <input type="text" id="Company" name="Company" list="companylist" />
+            <datalist id="companylist">
+                {% for objects in all_objects %}
+                <option>{{ objects.company }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div>
+            purpose:
+            <input type="text" id="Purpose" name="Purpose" list="purposelist" />
+            <datalist id="purposelist">
+                {% for objects in all_objects %}
+                <option>{{ objects.purpose }}</option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div>
+            Visit Area:
+            <select id="Visit_area">
+                <option value="" selected></option>
+                <option value="one">one</option>
+                <option value="two">two</option>
+                <option value="three">three</option>
+                <option value="four">four</option>
+                <option value="five">five</option>
+            </select>
+        </div>
+        <div>Sign Below:</div>
+        <div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
+        <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
+        <button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Next Step</button>
+    </div>
+    <div id="app">
+        <div class="sidebar">
+            <section class="scans">
+                <h2>Scans</h2>
+                <ul v-if="scans.length === 0">
+                    <li class="empty">No scans yet</li>
+                </ul>
+                <transition-group name="scans" tag="ul">
+                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
+                    </li>
+                </transition-group>
+            </section>
+        </div>
+
+        <div class="preview-container">
+            <video id="preview"></video>
+        </div>
+        <!-- <button onclick="myFunction()">Okay</button> -->
+        <p id="demo"></p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static "jquery.min.js"%}"></script>
+    <script src="{% static "jq-signature.js"%}"></script>
+    <script>
+        $(document).on('ready', function() {
+            if ($('.js-signature').length) {
+                $('.js-signature').jqSignature();
+            }
+        });
+
+        function clearCanvas() {
+            $('.js-signature').eq(0).jqSignature('clearCanvas');
+        }
+    </script>
+    <script type="text/javascript">
+        var app = new Vue({
+            delimiters: ['{', '}'],
+            el: '#app',
+            data: {
+                scanner: null,
+                activeCameraId: null,
+                cameras: [],
+                scans: []
+            },
+            mounted: function() {
+                var self = this;
+
+                self.scanner = new Instascan.Scanner({
+                    video: document.getElementById('preview'),
+                    scanPeriod: 5
+                });
+
+                self.scanner.addListener('scan', function(content, image) {
+                    self.scans.unshift({
+                        date: +(Date.now()),
+                        content: content
+                    });
+                    var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+                    var name = document.getElementById("Name").value
+                    var company = document.getElementById("Company").value
+                    var purpose = document.getElementById("Purpose").value
+                    var visit_area = document.getElementById("Visit_area").value
+                    if (dataUrl == "" || name == "" || company == "" || purpose == "" || visit_area == "" || content == "") {
+                        alert("Please Fill All Required Field");
+                        return false;
+                    }
+                    $.post("", {
+                        'name': name,
+                        'company': company,
+                        'purpose': purpose,
+                        'visit_area': visit_area,
+                        'url': dataUrl,
+                        'key': content,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    }, function(data, status) {
+                        alert("success log in");
+                    });
+                    location.href = "/";
+                });
+
+                Instascan.Camera.getCameras().then(function(cameras) {
+                    self.cameras = cameras;
+                    if (cameras.length > 0) {
+                        self.activeCameraId = cameras[0].id;
+                        self.scanner.start(cameras[0]);
+                    } else {
+                        console.error('No cameras found.');
+                    }
+                }).catch(function(e) {
+                    console.error(e);
+                });
+
+            },
+            methods: {}
+        });
+    </script>
+</body>
+
+</html>
