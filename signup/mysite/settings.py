@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'signup_system',
-        'USER': 'mist',
-        'PASSWORD': 'password',
+        'USER': '',#填
+        'PASSWORD': '',#填
         'HOST': 'localhost',
         'PORT': '',
     }
