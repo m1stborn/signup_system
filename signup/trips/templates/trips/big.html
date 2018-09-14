@@ -12,10 +12,9 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id="first" class="container" style="height: 100vh">
         <div>
-            name:
-            <input type="text" id="Name" name="Name" list="namelist" />
+            <input type="text" id="Name" name="Name" list="namelist" placeholder="Your Name"/>
             <datalist id="namelist">
                 {% for objects in all_objects %}
                 <option>{{ objects.name }}</option>
@@ -23,8 +22,7 @@
             </datalist>
         </div>
         <div>
-            company:
-            <input type="text" id="Company" name="Company" list="companylist" />
+            <input type="text" id="Company" name="Company" list="companylist" placeholder="Your Company"/>
             <datalist id="companylist">
                 {% for objects in all_objects %}
                 <option>{{ objects.company }}</option>
@@ -32,8 +30,7 @@
             </datalist>
         </div>
         <div>
-            purpose:
-            <input type="text" id="Purpose" name="Purpose" list="purposelist" />
+            <input type="text" id="Purpose" name="Purpose" list="purposelist" placeholder="Purpose"/>
             <datalist id="purposelist">
                 {% for objects in all_objects %}
                 <option>{{ objects.purpose }}</option>
@@ -54,10 +51,9 @@
         <div>Sign Below:</div>
         <div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
         <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
-        <button id="saveBtn" class="btn btn-default" onclick="saveSignature();">Next Step</button>
-        <a href="#app">go</a>
+        <button id="saveBtn" class="btn btn-default" onclick="window.location.href='#app'">Next Step</button>
     </div>
-    <div id="app">
+    <div id="app" style="height: 100vh">
         <div class="sidebar">
             <section class="scans">
                 <h2>Scans</h2>
@@ -82,6 +78,8 @@
     <script src="{% static "jquery.min.js"%}"></script>
     <script src="{% static "jq-signature.js"%}"></script>
     <script>
+        // $('first').width(screen.width);
+        // $('first').width(screen.heigth);
         $(document).on('ready', function() {
             if ($('.js-signature').length) {
                 $('.js-signature').jqSignature();

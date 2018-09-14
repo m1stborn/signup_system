@@ -7,14 +7,13 @@ from .forms import VisitorForm
 from django.template import RequestContext
 import django.utils.timezone as timezone
 import json
-import django.utils.timezone as timezone
 
 # Create your views here.
 
 def home(request):
 	return render(request, 'trips/home.html', {})
 
-def new(request):
+def login(request):
 	if request.method == "POST":
 		# print(request.POST)
 		Name = request.POST['name']
@@ -34,7 +33,7 @@ def new(request):
 	# print(visitor.objects.all().count())
 	return render(request, 'trips/big.html',{'all_obbjects':all_objects})
 
-def Q_out(request):
+def logout(request):
 	print("out")
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
