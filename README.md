@@ -48,3 +48,4 @@ grant all privileges on signup_system .* to mist@localhost identified by "passwo
 - use signup_system;//指定資料庫  
 - DESC trips_visitor;  
 - SELECT * FROM trips_visitor;  
+$E = mc^2$
