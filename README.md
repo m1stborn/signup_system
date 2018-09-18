@@ -40,3 +40,11 @@ A: 不太建議 git add -A 一次加入所有檔案，因為有時候會 commit 
 
 ##### data too long
 SET @@global.sql_mode= 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+grant all privileges on signup_system .* to mist@localhost identified by "password";
+
+#
+msql.server start
+mysql -u root -p
+use signup_system;//指定資料庫
+DESC trips_visitor;
+SELECT * FROM trips_visitor;
