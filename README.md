@@ -35,3 +35,17 @@ Q: 切換到別的 branch 時，如果該 branch 有未 commit 的檔案會切�
 A: 可以 git stash 先暫存改過但尚未 commit 的檔案，切回來之後再 git stash pop。可是除非你很清楚你在做什麼，否則不建議這麼做！
 Q. 改了一堆檔案，git add <檔案> 時超麻煩耶
 A: 不太建議 git add -A 一次加入所有檔案，因為有時候會 commit 不該 commit 的檔案，所以還是慢慢加吧～
+
+
+
+#data too long  
+SET @@global.sql_mode= 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';  
+  
+grant all privileges on signup_system .* to mist@localhost identified by "password";
+
+- msql.server start  
+- mysql -u root -p  
+- use signup_system;//指定資料庫  
+- DESC trips_visitor;  
+- SELECT * FROM trips_visitor;  
+/lambda
