@@ -31,7 +31,7 @@ def login(request):
 		# return render(request, 'trips/test3.html',{'object':thisobject})
 	all_objects = visitor.objects.all().order_by('name')
 	# print(visitor.objects.all().count())
-	return render(request, 'trips/big.html',{'all_obbjects':all_objects})
+	return render(request, 'trips/big.html',{'all_objects':all_objects})
 
 def logout(request):
 	print("out")

@@ -25,7 +25,7 @@ SECRET_KEY = 'ds^enoy9j&%#e=%apt_h4a3n(okj!y0)9#f7ma+2&9l6v^q4+m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'signup_system',
-        'USER': 'admin',#填
+        'USER': 'signup_system',#填
         'PASSWORD': 'password',#填
         'HOST': 'localhost',
         'PORT': '',
