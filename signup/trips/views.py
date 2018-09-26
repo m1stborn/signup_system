@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import visitor
+from .models import visit_log
 from datetime import datetime
-from .forms import VisitorForm
 from django.template import RequestContext
 import django.utils.timezone as timezone
 import json
@@ -24,27 +23,29 @@ def login(request):
 		Login_time = timezone.localtime()
 		Key = request.POST['key']
 		Is_out = False
-		getImg = visitor(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Url, login_time=Login_time, key=Key, is_out=Is_out)
+		getImg = visit_log(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Url, login_time=Login_time, key=Key, is_out=Is_out)
 		getImg.save()
 		# thisobject = visitor.objects.get(login_time=Login_time).pk
 		# print(thisobject)
 		# return render(request, 'trips/test3.html',{'object':thisobject})
-	all_objects = visitor.objects.all().order_by('name')
+	all_name = visit_log.objects.values('name').distinct()
+	all_company = visit_log.objects.values('company').distinct()
+	all_purpose = visit_log.objects.values('purpose').distinct()
 	# print(visitor.objects.all().count())
-	return render(request, 'trips/big.html',{'all_objects':all_objects})
+	return render(request, 'trips/big.html',{'all_name':all_name,'all_company':all_company,'all_purpose':all_purpose})
 
 def logout(request):
 	print("out")
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
-		queryset = visitor.objects.filter(key=Key, is_out=False).order_by('-login_time')
+		queryset = visit_log.objects.filter(key=Key, is_out=False).order_by('-login_time')
 		# a = visitor.objects.filter(login_time__year='2018')
 		# print(a)
 		# b = visitor.objects.filter(login_time__year='2018', login_time__month='09', login_time__date='')
 		# print(b)
 		print(queryset[0])
-		visitor.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
+		visit_log.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
 	return render(request, 'trips/test3.html',{})
 
 

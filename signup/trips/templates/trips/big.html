@@ -16,7 +16,7 @@
         <div>
             <input type="text" id="Name" name="Name" list="namelist" placeholder="Your Name" autocomplete="off" />
             <datalist id="namelist">
-                {% for objects in all_objects %}
+                {% for objects in all_name %}
                 <option>{{ objects.name }}</option>
                 {% endfor %}
             </datalist>
@@ -24,7 +24,7 @@
         <div>
             <input type="text" id="Company" name="Company" list="companylist" placeholder="Your Company" autocomplete="off"/>
             <datalist id="companylist">
-                {% for objects in all_objects %}
+                {% for objects in all_company %}
                 <option>{{ objects.company }}</option>
                 {% endfor %}
             </datalist>
@@ -32,7 +32,7 @@
         <div>
             <input type="text" id="Purpose" name="Purpose" list="purposelist" placeholder="Purpose" autocomplete="off"/>
             <datalist id="purposelist">
-                {% for objects in all_objects %}
+                {% for objects in all_purpose %}
                 <option>{{ objects.purpose }}</option>
                 {% endfor %}
             </datalist>
