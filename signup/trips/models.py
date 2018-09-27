@@ -16,17 +16,17 @@ class visit_log(models.Model):
         return self.name
 
 class Organization(models.Model):
-	org_name = models.TextField(max_length = 200)
+	org_name = models.CharField(max_length = 50)
 	org_url = models.URLField()
-	FAX = models.IntegerField()
+	FAX = models.CharField(max_length = 20)
 	def __str__(self):
 		return self.org_name
 		
 class Visitor(models.Model):
-	name = models.TextField(max_length = 200)
-	phone_number = models.IntegerField(unique=True, null = True)
+	name = models.CharField(max_length = 20)
+	phone_number = models.CharField(max_length = 10, default = '0912345678')
 	email = models.EmailField(default='example@gmail.com')
-	personal_ID = models.TextField(max_length = 10,blank = True)
+	personal_ID = models.CharField(max_length = 10,blank = True)
 	org_ID = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
 	def __str__(self):
 		return self.name
