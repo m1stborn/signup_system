@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <div>which host:
+        <select id="Visit_area">
+            <option value="" selected></option>
+            <option value="one">one</option>
+            <option value="two">two</option>
+            <option value="three">three</option>
+            <option value="four">four</option>
+            <option value="five">five</option>
+        </select>
+        <button onclick="window.location.href='{% url 'which_organization' %}'">confirm</button>
+    </div>
+</body>

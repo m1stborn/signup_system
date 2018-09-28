@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="Name" name="Name" list="namelist" placeholder="Your Name" autocomplete="off" />
+        <datalist id="namelist">
+            {% for objects in all_name %}
+            <option>{{ objects.company }}</option>
+                {% endfor %}
+        </datalist>
+    </div>
+    <button onclick="window.location.href='{% url 'who' %}'">confirm</button>
+
+</body>
