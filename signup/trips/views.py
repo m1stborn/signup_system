@@ -8,6 +8,12 @@ import django.utils.timezone as timezone
 import json
 
 # Create your views here.
+def which_host():
+	return render(request,'trips/which_host.html',{})
+def which_organization():
+	return render(request,'trips/which_organization.html',{})
+def who():
+	return render(request,'trips/who.html',{})
 
 def home(request):
 	return render(request, 'trips/home.html', {})
