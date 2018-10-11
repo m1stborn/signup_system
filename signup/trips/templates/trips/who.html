@@ -6,14 +6,27 @@
 </head>
 
 <body>
-    <div>
-        <input type="text" id="Name" name="Name" list="namelist" placeholder="Your Name" autocomplete="off" />
-        <datalist id="namelist">
-            {% for objects in all_name %}
-            <option>{{ objects.company }}</option>
-                {% endfor %}
-        </datalist>
-    </div>
-    <button onclick="window.location.href='{% url 'big' %}'">confirm</button>
-
+	<form method="post">{% csrf_token %}
+		<p>個人資料</p>
+		<div>
+			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
+		</div>
+		<div>
+			<input type="text" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Email" name="Email" placeholder="Email" autocomplete="off"/>
+		</div>
+		<p>公司資料</p>
+		<div>
+			<input type="text" id="Org_name" name="Org_name" placeholder="Org_name" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Url" name="Url" placeholder="Url" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Fax" name="Fax" placeholder="Fax" autocomplete="off"/>
+		</div>
+	    <button onclick="window.location.href='{% url 'who' %}'">confirm</button>
+	</form>
 </body>

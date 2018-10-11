@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
-from django.http import HttpResponseRedirect
-from .models import visit_log
+from django.http import HttpResponseRedirect, JsonResponse
+from .models import visit_log, Visitor, Organization
 from datetime import datetime
 from django.template import RequestContext
 import django.utils.timezone as timezone
@@ -9,11 +9,44 @@ import json
 
 # Create your views here.
 def which_host(request):
-	return render(request,'trips/which_host.html',{})
+	if request.method == "POST": #os request.GET()
+		print(request.POST['ID'])
+		# Do your logic here coz you got data in `get_value`
+		ID = request.POST['ID']
+		
+		
+
+		try: 
+			result = Visitor.objects.get(personal_ID=ID)
+		except Visitor.DoesNotExist:
+			result = None
+		if result:
+			name = result.name
+			print("in")
+			if not request.session.session_key:
+				print('create session_key')
+				request.session.create()
+			request.session['ID'] = ID
+		else:
+			name = "Not found"
+		print(name)
+		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
+	return render(request,'trips/identity.html',{})
 def which_organization(request):
 	return render(request,'trips/which_organization.html',{})
 def who(request):
-	return render(request,'trips/who.html',{})
+	if request.method=="POST":
+		Name = request.POST['Name']
+		Phone_number = request.POST['Phone_number']
+		Email = request.POST['Email']
+		Personal_ID = request.session['ID']
+		visit = visitor(name = Name ,phone_number = Phone_number , email = Email , personal_ID = personal_ID)
+		visit.save()
+		Org_name = request.POST['Org_name']
+		Org_url = request.POST['Url']
+		FAX = request.POST['Fax']
+
+	return render(request, 'trips/who.html', {})
 
 def home(request):
 	return render(request, 'trips/home.html', {})
@@ -21,8 +54,9 @@ def home(request):
 def login(request):
 	if request.method == "POST":
 		# print(request.POST)
-		Name = request.POST['name']
-		Company = request.POST['company']
+		ID = request.session['ID']
+		Name = Visitor.objects.get(personal_ID=ID).name
+		Company = Visitor.objects.get(personal_ID=ID).org_ID
 		Purpose = request.POST['purpose']
 		Url = request.POST['url']
 		Visit_area = request.POST['visit_area']
@@ -34,11 +68,8 @@ def login(request):
 		# thisobject = visitor.objects.get(login_time=Login_time).pk
 		# print(thisobject)
 		# return render(request, 'trips/test3.html',{'object':thisobject})
-	all_name = visit_log.objects.values('name').distinct()
-	all_company = visit_log.objects.values('company').distinct()
-	all_purpose = visit_log.objects.values('purpose').distinct()
 	# print(visitor.objects.all().count())
-	return render(request, 'trips/big.html',{'all_name':all_name,'all_company':all_company,'all_purpose':all_purpose})
+	return render(request, 'trips/big.html',{})
 
 def logout(request):
 	print("out")
