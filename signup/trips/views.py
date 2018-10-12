@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import visit_log, Visitor, Organization
+from .models import Visit_logs, Visitors, Organizations
 from datetime import datetime
 from django.template import RequestContext
 import django.utils.timezone as timezone
@@ -41,23 +41,23 @@ def login(request):
 		Login_time = timezone.localtime()
 		Key = request.POST['key']
 		Is_out = False
-		log = visit_log(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, login_time=Login_time, key=Key, is_out=Is_out)
+		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
 	if request.method=="POST":
-		print("in")
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
 		Personal_ID = request.session['ID']
-		visit = Visitor(name = Name ,phone_number = Phone_number , email = Email , personal_ID = Personal_ID)
+		visit = Visitors(name=Name, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
 		Org_name = request.POST['Org_name']
 		Org_url = request.POST['Url']
 		FAX = request.POST['Fax']
-		print("out")
+		org = Organizations(org_name=Org_name, org_url=Org_url, FAX=FAX)
+		org.save()
 	return render(request, 'trips/addID.html', {})
 
 def logout(request):
@@ -65,8 +65,8 @@ def logout(request):
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
-		queryset = visit_log.objects.filter(key=Key, is_out=False).order_by('-login_time')
-		visit_log.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
+		queryset = Visit_logs.objects.filter(key=Key, is_out=False).order_by('-login_time')
+		Visit_logs.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
 	return render(request, 'trips/logout.html',{})
 
 # def Q_in(request):
