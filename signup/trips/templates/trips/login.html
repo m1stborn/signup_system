@@ -11,15 +11,18 @@
     <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
 </head>
 
-<body>
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
     <div id="first" class="container" style="height: 100vh">
         <div>
-            <input type="text" id="Purpose" name="Purpose" list="purposelist" placeholder="Purpose" autocomplete="off"/>
-            <datalist id="purposelist">
-                {% for objects in all_purpose %}
-                <option>{{ objects.purpose }}</option>
-                {% endfor %}
-            </datalist>
+            Purpose:
+            <select id="Purpose">
+                <option value="" selected></option>
+                <option value="one">one</option>
+                <option value="two">two</option>
+                <option value="three">three</option>
+                <option value="four">four</option>
+                <option value="five">five</option>
+            </select>
         </div>
         <div>
             Visit Area:
@@ -37,6 +40,7 @@
         <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
         <button id="saveBtn" class="btn btn-default" onclick="window.location.href='#app'">Next Step</button>
     </div>
+
     <div id="app" style="height: 100vh">
         <div class="sidebar">
             <section class="scans">

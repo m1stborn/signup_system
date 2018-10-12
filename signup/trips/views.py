@@ -8,33 +8,44 @@ import django.utils.timezone as timezone
 import json
 
 # Create your views here.
-def which_host(request):
-	if request.method == "POST": #os request.GET()
-		print(request.POST['ID'])
-		# Do your logic here coz you got data in `get_value`
-		ID = request.POST['ID']
-		
-		
+def home(request):
+	return render(request, 'trips/home.html', {})
 
+def checkID(request):
+	if request.method == "POST": #os request.GET()
+		ID = request.POST['ID']
 		try: 
 			result = Visitor.objects.get(personal_ID=ID)
 		except Visitor.DoesNotExist:
 			result = None
 		if result:
 			name = result.name
-			print("in")
 			if not request.session.session_key:
 				print('create session_key')
 				request.session.create()
 			request.session['ID'] = ID
 		else:
 			name = "Not found"
-		print(name)
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
-	return render(request,'trips/identity.html',{})
-def which_organization(request):
-	return render(request,'trips/which_organization.html',{})
-def who(request):
+	return render(request,'trips/checkID.html',{})
+
+def login(request):
+	if request.method == "POST":
+		ID = request.session['ID']
+		visitor = Visitor.objects.get(personal_ID=ID)
+		Name = visitor.name
+		Company = visitor.org_ID
+		Purpose = request.POST['purpose']
+		Signature = request.POST['url']
+		Visit_area = request.POST['visit_area']
+		Login_time = timezone.localtime()
+		Key = request.POST['key']
+		Is_out = False
+		log = visit_log(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, login_time=Login_time, key=Key, is_out=Is_out)
+		log.save()
+	return render(request, 'trips/big.html',{})
+
+def addID(request):
 	if request.method=="POST":
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
@@ -45,31 +56,7 @@ def who(request):
 		Org_name = request.POST['Org_name']
 		Org_url = request.POST['Url']
 		FAX = request.POST['Fax']
-
 	return render(request, 'trips/who.html', {})
-
-def home(request):
-	return render(request, 'trips/home.html', {})
-
-def login(request):
-	if request.method == "POST":
-		# print(request.POST)
-		ID = request.session['ID']
-		Name = Visitor.objects.get(personal_ID=ID).name
-		Company = Visitor.objects.get(personal_ID=ID).org_ID
-		Purpose = request.POST['purpose']
-		Url = request.POST['url']
-		Visit_area = request.POST['visit_area']
-		Login_time = timezone.localtime()
-		Key = request.POST['key']
-		Is_out = False
-		getImg = visit_log(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Url, login_time=Login_time, key=Key, is_out=Is_out)
-		getImg.save()
-		# thisobject = visitor.objects.get(login_time=Login_time).pk
-		# print(thisobject)
-		# return render(request, 'trips/test3.html',{'object':thisobject})
-	# print(visitor.objects.all().count())
-	return render(request, 'trips/big.html',{})
 
 def logout(request):
 	print("out")
@@ -77,14 +64,8 @@ def logout(request):
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
 		queryset = visit_log.objects.filter(key=Key, is_out=False).order_by('-login_time')
-		# a = visitor.objects.filter(login_time__year='2018')
-		# print(a)
-		# b = visitor.objects.filter(login_time__year='2018', login_time__month='09', login_time__date='')
-		# print(b)
-		print(queryset[0])
 		visit_log.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
-	return render(request, 'trips/test3.html',{})
-
+	return render(request, 'trips/logout.html',{})
 
 # def Q_in(request):
 # 	print("come")
@@ -92,8 +73,6 @@ def logout(request):
 # 		print(request.POST['pk'])
 # 		print(request.POST['key'])
 # 	return render(request, 'trips/test3.html',{})
-
-
 
 # def getImg(request):
 # 	if request.method == "POST":
