@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>身份證字號驗證範例表單</title>
+   <title></title>
    <script src="{% static "jquery.min.js"%}"></script>
    <script src="{% static "jq-signature.js"%}"></script>
    <script src="{% static "jq-signature.min.js"%}"></script>
@@ -47,10 +47,14 @@
             data: {ID : value, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
             success: function(data) {
                if (data.name != "Not found"){
+                  $("#ask1").hide();
+                  $("#ask2").hide();
                   document.getElementById("q1").innerHTML = "are you " + data.name + " ?";
                   $("#ask1").show();
                }
                else{
+                  $("#ask1").hide();
+                  $("#ask2").hide();
                   document.getElementById("q2").innerHTML = "Not found!!";
                   $("#ask2").show();
                }
@@ -68,8 +72,9 @@
          window.location.href = '{% url 'login' %}';
       });
       $("#reset").click(function(){
-         $("input:text").val("");
          $("#ask1").hide();
+         $("#ask2").hide();
+         $("input:text").val("");
       });
       $("#new").click(function(){
          var value = document.getElementById("ID").value;
@@ -81,8 +86,9 @@
          window.location.href = '{% url 'addID' %}';
       });
       $("#reset2").click(function(){
-         $("input:text").val("");
+         $("#ask1").hide();
          $("#ask2").hide();
+         $("input:text").val("");
       });
 
 

@@ -43,20 +43,22 @@ def login(request):
 		Is_out = False
 		log = visit_log(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
-	return render(request, 'trips/big.html',{})
+	return render(request, 'trips/login.html',{})
 
 def addID(request):
 	if request.method=="POST":
+		print("in")
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
 		Personal_ID = request.session['ID']
-		visit = visitor(name = Name ,phone_number = Phone_number , email = Email , personal_ID = personal_ID)
+		visit = Visitor(name = Name ,phone_number = Phone_number , email = Email , personal_ID = Personal_ID)
 		visit.save()
 		Org_name = request.POST['Org_name']
 		Org_url = request.POST['Url']
 		FAX = request.POST['Fax']
-	return render(request, 'trips/who.html', {})
+		print("out")
+	return render(request, 'trips/addID.html', {})
 
 def logout(request):
 	print("out")

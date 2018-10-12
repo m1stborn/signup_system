@@ -27,6 +27,12 @@
 		<div>
 			<input type="text" id="Fax" name="Fax" placeholder="Fax" autocomplete="off"/>
 		</div>
-	    <button onclick="window.location.href='{% url 'who' %}'">confirm</button>
+	    <input type="button" id="check" value="confirm">
 	</form>
 </body>
+
+<script type="text/javascript">
+	     $("#").click(function(){
+         window.location.href = '{% url 'login' %}';
+      });
+</script>
