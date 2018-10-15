@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
+	<form method="post">{% csrf_token %}
+		<p>個人資料</p>
+		<div>
+			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
+		</div>
+		<div>
+			<input type="text" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Email" name="Email" placeholder="Email" autocomplete="off"/>
+		</div>
+		<p>公司資料</p>
+		<div>
+			<input type="text" id="Org_name" name="Org_name" placeholder="Org_name" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Url" name="Url" placeholder="Url" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Fax" name="Fax" placeholder="Fax" autocomplete="off"/>
+		</div>
+	    <input type="button" id="check" value="confirm">
+	</form>
+</body>
+
+<script type="text/javascript">
+	     $("#").click(function(){
+         window.location.href = '{% url 'login' %}';
+      });
+</script>

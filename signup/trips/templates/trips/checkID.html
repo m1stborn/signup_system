@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+   <title></title>
+   <script src="{% static "jquery.min.js"%}"></script>
+   <script src="{% static "jq-signature.js"%}"></script>
+   <script src="{% static "jq-signature.min.js"%}"></script>
+   <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
+   <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
+   <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
+</head>
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
+
+      <center>
+         <center>
+      <table border="1" width="60%">
+         <tr>
+            <td nowrap>身份證字號:</td>
+            <td><input id="ID" name="ID" size="20" type="text"></td>
+            <td><input id="send" type="button" value="送出"></td>
+         </tr>
+      </table>
+      <div id="ask1">
+         <div id="q1"></div>
+         <input id="check" type="button" value="是的">
+         <input id="reset" type="button" value="不是，請重新輸入">
+      </div>
+      <div id="ask2">
+         <div id="q2"></div>
+         <input id="new" type="button" value="第一次來，請填資料">
+         <input id="reset2" type="button" value="不是，請重新輸入">
+      </div>
+   </center>
+
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("#ask1").hide();
+      $("#ask2").hide();
+      $("#send").click(function(){
+         
+         // $("input:text").val("Glenn Quagmire");
+         var e = document.getElementById("ID");
+         var value = e.value;
+         $.ajax({
+            type: "post",
+            data: {ID : value, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+            success: function(data) {
+               if (data.name != "Not found"){
+                  $("#ask1").hide();
+                  $("#ask2").hide();
+                  document.getElementById("q1").innerHTML = "are you " + data.name + " ?";
+                  $("#ask1").show();
+               }
+               else{
+                  $("#ask1").hide();
+                  $("#ask2").hide();
+                  document.getElementById("q2").innerHTML = "Not found!!";
+                  $("#ask2").show();
+               }
+               
+         }});
+      });
+
+      $("#check").click(function(){
+         var value = document.getElementById("ID").value;
+         $.ajax({
+            type: "post",
+            data: {ID : value, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+            success: function(data) {
+         }});
+         window.location.href = '{% url 'login' %}';
+      });
+      $("#reset").click(function(){
+         $("#ask1").hide();
+         $("#ask2").hide();
+         $("input:text").val("");
+      });
+      $("#new").click(function(){
+         var value = document.getElementById("ID").value;
+         $.ajax({
+            type: "post",
+            data: {ID : value, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+            success: function(data) {
+         }});
+         window.location.href = '{% url 'addID' %}';
+      });
+      $("#reset2").click(function(){
+         $("#ask1").hide();
+         $("#ask2").hide();
+         $("input:text").val("");
+      });
+
+
+   });
+
+</script>
+</body>
+
+</html>
