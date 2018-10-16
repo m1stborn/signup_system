@@ -77,6 +77,11 @@ def logout(request):
 		Visit_logs.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
 	return render(request, 'trips/logout.html',{})
 
+def query(request):
+	online = Visit_logs.objects.all().filter(is_out = False)
+	print(online)
+	return HttpResponse('query')
+
 # def Q_in(request):
 # 	print("come")
 # 	if request.method == "POST":
