@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
 # C extensions
 *.so
 
@@ -112,4 +113,3 @@ hcc_venv/
 assets/
 env.py
 media/
-
