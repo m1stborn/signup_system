@@ -16,22 +16,32 @@ def checkID(request):
 		ID = request.POST['ID']
 		if not request.session.session_key:
 			print('create session_key')
+<<<<<<< HEAD
 			request.session.create()
+=======
+			request.session.create()		
+>>>>>>> 8dba64807aa0cba41b1f4454d0b69ed474a667d4
 		request.session['ID'] = ID
 		try: 
 			result = Visitors.objects.get(personal_ID=ID)
 		except Visitors.DoesNotExist:
 			result = None
 		if result:
+<<<<<<< HEAD
 			print("in")
 			name = result.name
+=======
+			name = result.name	
+>>>>>>> 8dba64807aa0cba41b1f4454d0b69ed474a667d4
 		else:
 			name = "Not found"
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request,'trips/checkID.html',{})
 
 def login(request):
+	print("123")
 	if request.method == "POST":
+		print("1")
 		ID = request.session['ID']
 		visitor = Visitors.objects.get(personal_ID=ID)
 		Name = visitor.name
@@ -54,13 +64,16 @@ def addID(request):
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
 		Personal_ID = request.session['ID']
-		visit = Visitors(name=Name, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
-		visit.save()
 		Org_name = request.POST['Org_name']
 		Org_url = request.POST['Url']
 		FAX = request.POST['Fax']
 		org = Organizations(org_name=Org_name, org_url=Org_url, FAX=FAX)
 		org.save()
+		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
+		visit.save()
+
+		# return render(request,'trips/login.html',{})
+		return redirect('login')
 	return render(request, 'trips/addID.html', {})
 
 def logout(request):

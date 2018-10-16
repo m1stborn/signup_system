@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+	<form method="post">{% csrf_token %}
+		<div>
+			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
+		</div>
+		<div>
+			<input type="text" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off"/>
+		</div>
+		<div>
+			<input type="text" id="Email" name="Email" placeholder="Email" autocomplete="off"/>
+		</div>
+	    <button onclick="window.location.href='{% url 'who' %}'">confirm</button>
+	</form>
+</body>
+
