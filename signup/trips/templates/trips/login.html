@@ -12,70 +12,87 @@
 </head>
 
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
+    <center>
     <div id="first" class="container" style="height: 100vh">
         <div>
-            Purpose:
-            <select id="Purpose">
+            進入目的：
+            <select id="Purpose" style="width:100px;">   
                 <option value="" selected></option>
-                <option value="one">one</option>
-                <option value="two">two</option>
-                <option value="three">three</option>
-                <option value="four">four</option>
-                <option value="five">five</option>
+                <option value="one">例行維護</option>
+                <option value="two">故障檢修</option>
+                <option value="three">設備安裝設定</option>
+                <option value="four">環境施工</option>
+                <option value="five">商務拜訪</option>
+                <option value="five">其他</option>
             </select>
         </div>
         <div>
-            Visit Area:
-            <select id="Visit_area">
+            進出區域：
+            <select id="Visit_area" style="width:100px;">
                 <option value="" selected></option>
-                <option value="one">one</option>
-                <option value="two">two</option>
-                <option value="three">three</option>
-                <option value="four">four</option>
-                <option value="five">five</option>
+                <option value="one">辦公室</option>
+                <option value="two">研討室</option>
+                <option value="three">工作區</option>
+                <option value="four">電腦機房</option>
             </select>
         </div>
-        <div>Sign Below:</div>
-        <div class="js-signature" data-width="600" data-height="200" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="true"></div>
-        <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp;
-        <button id="saveBtn" class="btn btn-default" onclick="window.location.href='#app'">Next Step</button>
+        <div>
+            接洽同仁：
+            <select id="Host" style="width:100px;">
+                <option value="" selected></option>
+                <option value="one">百立</option>
+                <option value="two">俊銘</option>
+                <option value="three">凱庭</option>
+            </select>
+        </div>
+        <div>請在下方空白處簽名：</div>
+        <div class="js-signature" data-width="600" data-height="300" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="false"></div>
+<!--         //重新簽名 -->
+<!--         <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp; -->
+        <button id="saveBtn" class="btn btn-default" onclick="nextStep();">下一步</button>
     </div>
 
     <div id="app" style="height: 100vh">
         <div class="sidebar">
             <section class="scans">
-                <h2>Scans</h2>
-                <ul v-if="scans.length === 0">
+                <h2>請掃描QR code</h2>
+                <!-- print content -->
+                <!-- <ul v-if="scans.length === 0">
                     <li class="empty">No scans yet</li>
                 </ul>
                 <transition-group name="scans" tag="ul">
-                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
-                    </li>
-                </transition-group>
+                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }</li>
+                </transition-group> -->
             </section>
         </div>
 
         <div class="preview-container">
             <video id="preview"></video>
         </div>
-        <!-- <button onclick="myFunction()">Okay</button> -->
-        <p id="demo"></p>
     </div>
 
     <!-- Scripts -->
     <script src="{% static "jquery.min.js"%}"></script>
     <script src="{% static "jq-signature.js"%}"></script>
     <script>
-        // $('first').width(screen.width);
-        // $('first').width(screen.heigth);
         $(document).on('ready', function() {
             if ($('.js-signature').length) {
                 $('.js-signature').jqSignature();
             }
         });
-
         function clearCanvas() {
             $('.js-signature').eq(0).jqSignature('clearCanvas');
+        }
+        function nextStep(){
+            // var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
+            var purpose = document.getElementById("Purpose").value;
+            var visit_area = document.getElementById("Visit_area").value;
+            var host = document.getElementById('Host').value;
+            if (purpose == "" || visit_area == "" || host == "") {
+                alert("請填入完整資訊");
+                return false;
+            }
+            location.href='#app';
         }
     </script>
     <script type="text/javascript">
@@ -102,20 +119,18 @@
                         content: content
                     });
                     var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
-                    var purpose = document.getElementById("Purpose").value
-                    var visit_area = document.getElementById("Visit_area").value
-                    if (dataUrl == "" || purpose == "" || visit_area == "" || content == "") {
-                        alert("Please Fill All Required Field");
-                        return false;
-                    }
+                    var purpose = document.getElementById("Purpose").value;
+                    var visit_area = document.getElementById("Visit_area").value;
+                    var host = document.getElementById("Host").value;
                     $.post("", {
                         'purpose': purpose,
                         'visit_area': visit_area,
                         'url': dataUrl,
                         'key': content,
+                        'host': host,
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     }, function(data, status) {
-                        alert("success log in");
+                        alert("登記成功");
                     });
                     location.href = "/";
                 });
@@ -136,6 +151,7 @@
             methods: {}
         });
     </script>
+    </center>
 </body>
 
 </html>

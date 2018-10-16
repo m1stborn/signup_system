@@ -1,8 +1,28 @@
 <!DOCTYPE html>
 <html>
-<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
-<button onclick="window.location.href='{% url 'checkID' %}'">Login</button>
-<button onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+<style type="text/css">
+	section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+</style>
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B" onload="ShowTime()">
+	<section>
+		<button onclick="window.location.href='{% url 'checkID' %}'" style="width:200px; height:100px; font-size: 30px;">簽到</button>
+		<button onclick="window.location.href='{% url 'logout' %}'" style="width:200px; height:100px; font-size: 30px;">簽退</button>
+		<div id="showbox"></div>
+	</section>
+
+<script type="text/javascript">
+function ShowTime(){
+  d = new Date();
+　document.getElementById('showbox').innerHTML = "現在時間：" + d.toLocaleString();
+　setTimeout('ShowTime()',1000);
+}
+</script>
+
 
 </body>
 </html>
