@@ -14,16 +14,17 @@ def home(request):
 def checkID(request):
 	if request.method == "POST": #os request.GET()
 		ID = request.POST['ID']
+		if not request.session.session_key:
+			print('create session_key')
+			request.session.create()
+		request.session['ID'] = ID
 		try: 
-			result = Visitor.objects.get(personal_ID=ID)
-		except Visitor.DoesNotExist:
+			result = Visitors.objects.get(personal_ID=ID)
+		except Visitors.DoesNotExist:
 			result = None
 		if result:
+			print("in")
 			name = result.name
-			if not request.session.session_key:
-				print('create session_key')
-				request.session.create()
-			request.session['ID'] = ID
 		else:
 			name = "Not found"
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
@@ -32,21 +33,23 @@ def checkID(request):
 def login(request):
 	if request.method == "POST":
 		ID = request.session['ID']
-		visitor = Visitor.objects.get(personal_ID=ID)
+		visitor = Visitors.objects.get(personal_ID=ID)
 		Name = visitor.name
 		Company = visitor.org_ID
 		Purpose = request.POST['purpose']
 		Signature = request.POST['url']
 		Visit_area = request.POST['visit_area']
+		Host = request.POST['host']
 		Login_time = timezone.localtime()
 		Key = request.POST['key']
 		Is_out = False
-		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, login_time=Login_time, key=Key, is_out=Is_out)
+		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
 	if request.method=="POST":
+		print("getpost")
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
