@@ -16,23 +16,15 @@ def checkID(request):
 		ID = request.POST['ID']
 		if not request.session.session_key:
 			print('create session_key')
-<<<<<<< HEAD
-			request.session.create()
-=======
-			request.session.create()		
->>>>>>> 8dba64807aa0cba41b1f4454d0b69ed474a667d4
+			request.session.create()	
 		request.session['ID'] = ID
 		try: 
 			result = Visitors.objects.get(personal_ID=ID)
 		except Visitors.DoesNotExist:
 			result = None
 		if result:
-<<<<<<< HEAD
 			print("in")
 			name = result.name
-=======
-			name = result.name	
->>>>>>> 8dba64807aa0cba41b1f4454d0b69ed474a667d4
 		else:
 			name = "Not found"
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
