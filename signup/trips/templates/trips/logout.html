@@ -10,27 +10,27 @@
     <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
 </head>
 
-<body>
-
-    <div id="app">
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
+    <center>
+    <div id="app" style="height: 100vh">
         <div class="sidebar">
             <section class="scans">
-                <h2>Scans</h2>
-                <ul v-if="scans.length === 0">
+                <h2>請掃描QR code</h2>
+                <!-- print content -->
+                <!-- <ul v-if="scans.length === 0">
                     <li class="empty">No scans yet</li>
                 </ul>
                 <transition-group name="scans" tag="ul">
-                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }
-                    </li>
-                </transition-group>
+                    <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }</li>
+                </transition-group> -->
             </section>
         </div>
 
         <div class="preview-container">
             <video id="preview"></video>
         </div>
-        <p id="demo"></p>
     </div>
+    </center>
 
     <script type="text/javascript">
         var app = new Vue({
@@ -54,19 +54,27 @@
                         date: +(Date.now()),
                         content: content
                     });
+                    var name = "";
                     $.post("", {
                             'key': content,
                             'csrfmiddlewaretoken': '{{ csrf_token }}',
                         },
-                        function(data, status) {
-                            alert("success");
-                        });
-                    var time = 0;
+                        function(data,status) {  
+                            if(status=="success"){
+                                name = data.name + " 簽退成功";
+                                alert(name);
+                            }
+                            else{
+                                alert("error");
+                            }
+                    });
+                    
+                    var time = 1;
                     setInterval(function() {
                         if (time > 0) {
                             time--;
                         } else {
-                            location.href = "/"
+                            location.href = "/"; 
                         }
                     }, 1000)
                 });
