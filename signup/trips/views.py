@@ -81,6 +81,7 @@ def addID(request):
 			org.save()
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
+		# return render(request,'trips/login.html',{})
 		print("yes")
 		return redirect('login')
 	all_objects = Organizations.objects.all()
@@ -103,6 +104,11 @@ def logout(request):
 		print(name)
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
+
+def query(request):
+	online = Visit_logs.objects.all().filter(is_out = False)
+	print(online)
+	return render(request, 'trips/query.html' ,{'visit_logs':online})
 
 # def Q_in(request):
 # 	print("come")
