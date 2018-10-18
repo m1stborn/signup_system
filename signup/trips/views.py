@@ -12,10 +12,10 @@ def home(request):
 	return render(request, 'trips/home.html', {})
 
 def checkID(request):
-	if request.method == "POST": #os request.GET()
+	if request.method == "POST":
 		ID = request.POST['ID']
 		if not request.session.session_key:
-			print('create session_key')
+			# print('create session_key')
 			request.session.create()	
 		request.session['ID'] = ID
 		try: 
@@ -23,7 +23,6 @@ def checkID(request):
 		except Visitors.DoesNotExist:
 			result = None
 		if result:
-			print("in")
 			name = result.name
 		else:
 			name = "Not found"
@@ -31,9 +30,8 @@ def checkID(request):
 	return render(request,'trips/checkID.html',{})
 
 def login(request):
-	print("123")
 	if request.method == "POST":
-		print("1")
+		#get request.POST and setup
 		ID = request.session['ID']
 		visitor = Visitors.objects.get(personal_ID=ID)
 		Name = visitor.name
@@ -42,38 +40,69 @@ def login(request):
 		Signature = request.POST['url']
 		Visit_area = request.POST['visit_area']
 		Host = request.POST['host']
-		Login_time = timezone.localtime()
 		Key = request.POST['key']
+		Login_time = timezone.localtime()
 		Is_out = False
+		Logout_time = timezone.localtime()
+		#force logout
+		try:
+			result = Visit_logs.objects.filter(key=Key, is_out=False)
+		except Visit_logs.DoesNotExist:
+			result = None
+		if result:
+			Visit_logs.objects.filter(key=Key, is_out=False).update(is_out=True, logout_time=Logout_time)
+		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
+		print(Name, "key is", Key)
+		return HttpResponse(json.dumps({'name': Name}), content_type="application/json")
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
+	print(request.session['ID'])
 	if request.method=="POST":
 		print("getpost")
+		print(request.POST['Org_name'])
+		print(request.POST['Email'])
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
 		Personal_ID = request.session['ID']
 		Org_name = request.POST['Org_name']
-		Org_url = request.POST['Url']
-		FAX = request.POST['Fax']
-		org = Organizations(org_name=Org_name, org_url=Org_url, FAX=FAX)
-		org.save()
+		if request.POST['Org_name']!='':
+			org = Organizations.objects.get(org_name=Org_name)
+		print(request.POST['FAX'])
+		if request.POST['OrgName']!='':
+			print("this")
+			OrgName = request.POST['OrgName']
+			Org_url = "https://docs.djangoproject.com/en/2.1/topics/db/queries/"
+			FAX = request.POST['FAX']
+			org = Organizations(org_name=OrgName, org_url = Org_url, FAX = FAX)
+			org.save()
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
 		# return render(request,'trips/login.html',{})
+		print("yes")
 		return redirect('login')
-	return render(request, 'trips/addID.html', {})
+	all_objects = Organizations.objects.all()
+	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
 def logout(request):
-	print("out")
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
-		queryset = Visit_logs.objects.filter(key=Key, is_out=False).order_by('-login_time')
-		Visit_logs.objects.filter(pk=queryset[0].pk).update(is_out=True, logout_time=Logout_time)
+		try: 
+			result = Visit_logs.objects.get(key=Key, is_out=False)
+		except Visit_logs.DoesNotExist:
+			result = None
+		if result:
+			name = result.name
+			print(name, "use right qrcode and key is", Key)
+			Visit_logs.objects.filter(name=name).update(is_out=True, logout_time=Logout_time)
+		else:
+			name = "Not found"
+		print(name)
+		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
 def query(request):

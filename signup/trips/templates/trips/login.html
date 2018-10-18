@@ -130,9 +130,23 @@
                         'host': host,
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     }, function(data, status) {
-                        alert("登記成功");
+                        if(status=="success"){
+                            var name = data.name + " 簽到成功";
+                            alert(name);
+                        }
+                        else{
+                            alert("error");
+                        }
                     });
-                    location.href = "/";
+                    
+                    var time = 1;
+                    setInterval(function() {
+                        if (time > 0) {
+                            time--;
+                        } else {
+                            location.href = "/"; 
+                        }
+                    }, 1000)
                 });
 
                 Instascan.Camera.getCameras().then(function(cameras) {

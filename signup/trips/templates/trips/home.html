@@ -8,12 +8,26 @@
     margin-right: -50%;
     transform: translate(-50%, -50%) }
 </style>
+<style type="text/css">
+.div_right_bottom {
+width:300px;
+float:right;
+position:fixed;
+right:0px;
+bottom:20px;
+
+}
+</style>
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B" onload="ShowTime()">
+	<center>
+		<h1>國家實驗研究院科技政策研究與資訊中心</h1>
+		<h1>訪客進出系統</h1>
+	</center>
 	<section>
 		<button onclick="window.location.href='{% url 'checkID' %}'" style="width:200px; height:100px; font-size: 30px;">簽到</button>
 		<button onclick="window.location.href='{% url 'logout' %}'" style="width:200px; height:100px; font-size: 30px;">簽退</button>
-		<div id="showbox"></div>
 	</section>
+	<div id="showbox" class="div_right_bottom"></div>
 
 <script type="text/javascript">
 function ShowTime(){
