@@ -9,14 +9,15 @@
    <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
    <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
    <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
+<!--    <link rel="stylesheet" href="{% static "style.css"%}" > -->
 </head>
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
 
       <center>
-      <div>
-         請輸入身分證字號:
-         <input id="ID" name="ID" size="20" type="text">
-         <input id="send" type="button" value="送出">
+      <div style="font-size: 50px">
+         請輸入身分證字號：
+         <input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" style="width: 300px; height:100px; font-size: 50px">
+         <button id="send" style="width:120px;height:100px;font-size:50px;">送出</button>
       </div>
       <div id="ask1">
          <div id="q1"></div>
@@ -35,8 +36,6 @@
       $("#ask1").hide();
       $("#ask2").hide();
       $("#send").click(function(){
-         
-         // $("input:text").val("Glenn Quagmire");
          var e = document.getElementById("ID");
          var value = e.value;
          $.ajax({
