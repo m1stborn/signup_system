@@ -50,23 +50,32 @@ def login(request):
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
+	print(request.session['ID'])
 	if request.method=="POST":
 		print("getpost")
+		print(request.POST['Org_name'])
+		print(request.POST['Email'])
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
 		Personal_ID = request.session['ID']
 		Org_name = request.POST['Org_name']
-		Org_url = request.POST['Url']
-		FAX = request.POST['Fax']
-		org = Organizations(org_name=Org_name, org_url=Org_url, FAX=FAX)
-		org.save()
+		if request.POST['Org_name']!='':
+			org = Organizations.objects.get(org_name=Org_name)
+		print(request.POST['FAX'])
+		if request.POST['OrgName']!='':
+			print("this")
+			OrgName = request.POST['OrgName']
+			Org_url = "https://docs.djangoproject.com/en/2.1/topics/db/queries/"
+			FAX = request.POST['FAX']
+			org = Organizations(org_name=OrgName, org_url = Org_url, FAX = FAX)
+			org.save()
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
-
-		# return render(request,'trips/login.html',{})
+		print("yes")
 		return redirect('login')
-	return render(request, 'trips/addID.html', {})
+	all_objects = Organizations.objects.all()
+	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
 def logout(request):
 	print("out")

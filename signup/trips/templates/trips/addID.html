@@ -3,6 +3,10 @@
 <html>
 
 <head>
+	<!-- Stylesheets -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> -->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/mono-blue.min.css"> -->
+	<link rel="stylesheet" href="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.css">
 </head>
 
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
@@ -12,31 +16,100 @@
 		<div>
 			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
 		</div>
-		<div>
-			<input type="text" id="ID" name="ID" placeholder="ID" autocomplete="off"/>
-		</div>
+		<!-- <div> -->
+			<!-- <input type="text" id="ID" name="ID" placeholder="ID" autocomplete="off"/> -->
+		<!-- </div> -->
 		<div>
 			<input type="text" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off"/>
 		</div>
 		<div>
 			<input type="text" id="Email" name="Email" placeholder="Email" autocomplete="off"/>
 		</div>
+		<div class="col-md-6" id="select-org">
+			<select id="select" class="form-control">
+				{% for objects in all_objects %}
+					<option>{{ objects.org_name }}</option>
+				{% endfor %}
+			</select>
+			<input id="addorg" type="button" value="沒有您所屬的單位嗎? 請點此新增">
+		</div>
+		<div id="neworg">
 		<p>公司資料</p>
 		<div>
 			<input type="text" id="Org_name" name="Org_name" placeholder="Org_name" autocomplete="off"/>
 		</div>
 		<div>
-			<input type="text" id="Url" name="Url" placeholder="Url" autocomplete="off"/>
-		</div>
-		<div>
 			<input type="text" id="Fax" name="Fax" placeholder="Fax" autocomplete="off"/>
 		</div>
-	    <input type="submit" id="check" value="confirm">
-<<<<<<< HEAD
-	    <input type="hidden" name="redirect" value="{% url 'login' %}">
-=======
->>>>>>> 8dba64807aa0cba41b1f4454d0b69ed474a667d4
+		</div>
+	    <input type="button" id="check" value="confirm">
 	</form>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
+	<script src="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#neworg").hide();
+			var org_name_select="";
+			var org_click=false; 
+			$('#select').editableSelect().on('select.editable-select', function (e, li) {
+				$('#last-selected').html(li.val() + '. ' + li.text());
+				org_name_select =  li.text();
+			});
+			$("#addorg").click(function(){
+				 $("#neworg").show();
+				 $("#select-org").hide();
+				 org_click=true;
+			});
+			$("#check").click(function(){
+				 var Name = document.getElementById("Name").value;
+				 var Phone_number = document.getElementById("Phone_number").value;
+				 var Email = document.getElementById("Email").value;
+				 var OrgName = document.getElementById("Org_name").value;
+				 var Fax = document.getElementById("Fax").value;
+				 alert("check");
+				 if ((Name =="")|| (Phone_number =="")|| (Email=="")){
+					alert("???????????");
+					return false;
+				 }
+				 else if((org_click==false) && (org_name_select =="")){
+					alert("???????????");
+					return false;
+				 }
+				 else if(org_click==true){
+					if ((OrgName =="")|| (Fax =="")){
+						alert("???????????");
+						return false;
+					}
+					else{
+						 $.ajax({
+							type: "post",
+							data: {Org_name:org_name_select, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+							success: function(data) {
+								alert("success");
+							}
+						 });
+						 <!-- window.location.href = '{% url 'login' %}'; -->
+					}
+				 }
+				 else{
+					 $.ajax({
+						type: "post",
+						data: {Org_name:org_name_select, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+						success: function(data) {
+							alert("success");
+						}
+					 });
+					 <!-- window.location.href = '{% url 'login' %}'; -->
+				 }
+			});
+		});
+		function test(){
+			alert(document.getElementById("select").value);
+		}
+
+	</script>
 </body>
 
 <script type="text/javascript">
