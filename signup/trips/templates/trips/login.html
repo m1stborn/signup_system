@@ -131,7 +131,7 @@
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     }, function(data, status) {
                         if(status=="success"){
-                            name = data.name + " 簽退成功";
+                            var name = data.name + " 簽到成功";
                             alert(name);
                         }
                         else{

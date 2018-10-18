@@ -54,29 +54,21 @@
                         date: +(Date.now()),
                         content: content
                     });
-                    var name = "";
                     $.post("", {
                             'key': content,
                             'csrfmiddlewaretoken': '{{ csrf_token }}',
                         },
                         function(data,status) {  
-                            if(status=="success"){
-                                name = data.name + " 簽退成功";
-                                alert(name);
+                            if(data.name != "Not found"){
+                                var message = data.name + " 簽退成功";
+                                alert(message);
+                                location.href = "/"; 
                             }
-                            else{
-                                alert("error");
-                            }
+                            else {
+                                alert("請掃描正確的QR code!!!");
+                                return false;
+                            }   
                     });
-                    
-                    var time = 1;
-                    setInterval(function() {
-                        if (time > 0) {
-                            time--;
-                        } else {
-                            location.href = "/"; 
-                        }
-                    }, 1000)
                 });
                 Instascan.Camera.getCameras().then(function(cameras) {
                     self.cameras = cameras;

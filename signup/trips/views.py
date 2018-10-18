@@ -12,7 +12,7 @@ def home(request):
 	return render(request, 'trips/home.html', {})
 
 def checkID(request):
-	if request.method == "POST": #os request.GET()
+	if request.method == "POST":
 		ID = request.POST['ID']
 		if not request.session.session_key:
 			# print('create session_key')
@@ -31,7 +31,7 @@ def checkID(request):
 
 def login(request):
 	if request.method == "POST":
-		print("1")
+		#get request.POST and setup
 		ID = request.session['ID']
 		visitor = Visitors.objects.get(personal_ID=ID)
 		Name = visitor.name
@@ -40,12 +40,22 @@ def login(request):
 		Signature = request.POST['url']
 		Visit_area = request.POST['visit_area']
 		Host = request.POST['host']
-		Login_time = timezone.localtime()
 		Key = request.POST['key']
+		Login_time = timezone.localtime()
 		Is_out = False
+		Logout_time = timezone.localtime()
+		#force logout
+		try:
+			result = Visit_logs.objects.filter(key=Key, is_out=False)
+		except Visit_logs.DoesNotExist:
+			result = None
+		if result:
+			Visit_logs.objects.filter(key=Key, is_out=False).update(is_out=True, logout_time=Logout_time)
+		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
 		print(Name, "key is", Key)
+		return HttpResponse(json.dumps({'name': Name}), content_type="application/json")
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
@@ -73,7 +83,7 @@ def logout(request):
 		Key = request.POST['key']
 		try: 
 			result = Visit_logs.objects.get(key=Key, is_out=False)
-		except Visitors.DoesNotExist:
+		except Visit_logs.DoesNotExist:
 			result = None
 		if result:
 			name = result.name
@@ -81,6 +91,7 @@ def logout(request):
 			Visit_logs.objects.filter(name=name).update(is_out=True, logout_time=Logout_time)
 		else:
 			name = "Not found"
+		print(name)
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
