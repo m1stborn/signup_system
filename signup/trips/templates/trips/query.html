@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">name</th>
+					<th scope="col">company</th>
+					<th scope="col">login_time</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for log in visit_logs %}
+				<tr>
+					<form><th scope="row">{{log.name}}</th></form>
+					<form><td>{{log.company}}</td></form>
+					<form><td>{{log.login_time}}</td></form>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</body>
+</html>

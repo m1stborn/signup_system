@@ -4,7 +4,7 @@ import django.utils.timezone as timezone
 # Create your models here.
 class Visit_logs(models.Model):
     name = models.TextField(max_length = 200)
-    company = models.TextField(max_length = 200)
+    company = models.TextField(max_length = 30)
     purpose = models.TextField(max_length = 200)
     visit_area = models.TextField(max_length = 200)
     host = models.TextField(max_length = 200, default="")

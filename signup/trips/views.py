@@ -63,7 +63,6 @@ def addID(request):
 		org.save()
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
-
 		# return render(request,'trips/login.html',{})
 		return redirect('login')
 	return render(request, 'trips/addID.html', {})
@@ -80,7 +79,7 @@ def logout(request):
 def query(request):
 	online = Visit_logs.objects.all().filter(is_out = False)
 	print(online)
-	return HttpResponse('query')
+	return render(request, 'trips/query.html' ,{'visit_logs':online})
 
 # def Q_in(request):
 # 	print("come")
