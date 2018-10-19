@@ -50,66 +50,81 @@
 	<script src="https://rawgithub.com/indrimuska/jquery-editable-select/master/dist/jquery-editable-select.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$("#neworg").hide();
-			var org_name_select="";
-			var org_click=false; 
-			$('#select').editableSelect().on('select.editable-select', function (e, li) {
-				$('#last-selected').html(li.val() + '. ' + li.text());
-				org_name_select =  li.text();
-			});
-			$("#addorg").click(function(){
-				 $("#neworg").show();
-				 $("#select-org").hide();
-				 org_click=true;
-			});
-			$("#check").click(function(){
-				 var Name = document.getElementById("Name").value;
-				 var ID = document.getElementById("ID").value;
-				 var Phone_number = document.getElementById("Phone_number").value;
-				 var Email = document.getElementById("Email").value;
-				 var OrgName = document.getElementById("Org_name").value;
-				 var Fax = document.getElementById("Fax").value;
-				 if ((Name =="")|| (Phone_number =="")|| (Email=="")|| (ID=="")){
-					alert("請輸入完整資訊");
-					return false;
-				 }
-				 else if((org_click==false) && (org_name_select =="")){
-					alert("請輸入完整資訊");
-					return false;
-				 }
-				 else if(org_click==true){
-					if ((OrgName =="")|| (Fax =="")){
-						alert("請輸入完整資訊");
-						return false;
-					}
-					else{
-						 $.ajax({
-							type: "post",
-							data: {Org_name:org_name_select, ID:ID, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
-							success: function(data) {
-								var message = Name + "和" + OrgName + "新增成功";
-								alert(message);
-								location.href = '{% url 'login' %}';
-							}
-						 });
-					}
-				 }
-				 else{
-					 $.ajax({
-						type: "post",
-						data: {Org_name:org_name_select, ID:ID, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
-						success: function(data) {
-							var message = Name + "新增成功";
-							alert(message);
-							location.href = '{% url 'login' %}';
-						}
-					 });
-				 }
-			});
-		});
-		function test(){
-			alert(document.getElementById("select").value);
-		}
+	    $("#neworg").hide();
+	    var org_name_select = "";
+	    var org_click = false;
+	    $('#select').editableSelect().on('select.editable-select', function(e, li) {
+	        $('#last-selected').html(li.val() + '. ' + li.text());
+	        org_name_select = li.text();
+	    });
+	    $("#addorg").click(function() {
+	        $("#neworg").show();
+	        $("#select-org").hide();
+	        org_click = true;
+	    });
+	    $("#check").click(function() {
+	        var Name = document.getElementById("Name").value;
+	        var ID = document.getElementById("ID").value;
+	        var Phone_number = document.getElementById("Phone_number").value;
+	        var Email = document.getElementById("Email").value;
+	        var OrgName = document.getElementById("Org_name").value;
+	        var Fax = document.getElementById("Fax").value;
+	        if ((Name == "") || (Phone_number == "") || (Email == "") || (ID == "")) {
+	            alert("請輸入完整資訊");
+	            return false;
+	        } else if ((org_click == false) && (org_name_select == "")) {
+	            alert("請輸入完整資訊");
+	            return false;
+	        } else if (org_click == true) {
+	            if ((OrgName == "") || (Fax == "")) {
+	                alert("請輸入完整資訊");
+	                return false;
+	            } else {
+	                $.ajax({
+	                    type: "post",
+	                    data: {
+	                        Org_name: org_name_select,
+	                        ID: ID,
+	                        Name: Name,
+	                        Phone_number: Phone_number,
+	                        Email: Email,
+	                        OrgName: OrgName,
+	                        FAX: Fax,
+	                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+	                    },
+	                    success: function(data) {
+	                        var message = Name + "和" + OrgName + "新增成功";
+	                        alert(message);
+	                        location.href = '{% url 'login' %}';
+	                    }
+	                });
+	            }
+	        } else {
+	            $.ajax({
+	                type: "post",
+	                data: {
+	                    Org_name: org_name_select,
+	                    ID: ID,
+	                    Name: Name,
+	                    Phone_number: Phone_number,
+	                    Email: Email,
+	                    OrgName: OrgName,
+	                    FAX: Fax,
+	                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+	                },
+	                success: function(data) {
+	                    var message = Name + "新增成功";
+	                    alert(message);
+	                    location.href = '{% url 'login' %}';
+	                }
+	            });
+	        }
+	    });
+	});
+
+	function test() {
+	    alert(document.getElementById("select").value);
+	}
 
 	</script>
 </body>
