@@ -83,6 +83,11 @@ def addID(request):
 	all_objects = Organizations.objects.all()
 	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
+def query(request):
+	online = Visit_logs.objects.all().filter(is_out = False)
+	print(online)
+	return render(request, 'trips/query.html' ,{'visit_logs':online})
+	
 def logout(request):
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
