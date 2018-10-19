@@ -13,13 +13,14 @@
 </head>
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
 
-      <center>
-      <div style="font-size: 50px">
+      <div style="font-size:50px;height: 100vh;margin: 0px auto;">
          請輸入身分證字號：
          <input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" style="width: 300px; height:100px; font-size: 50px">
          <button id="send" style="width:120px;height:100px;font-size:50px;">送出</button>
+         <a href="/addID">新增</a> 
       </div>
-      <div id="ask1">
+      
+<!--       <div id="ask1">
          <div id="q1"></div>
          <input id="check" type="button" value="是的">
          <input id="reset" type="button" value="不是，請重新輸入">
@@ -28,13 +29,14 @@
          <div id="q2"></div>
          <input id="new" type="button" value="第一次來，請填資料">
          <input id="reset2" type="button" value="不是，請重新輸入">
-      </div>
-   </center>
+      </div> -->
+<script type="text/javascript">
 
+</script>
 <script type="text/javascript">
    $(document).ready(function(){
-      $("#ask1").hide();
-      $("#ask2").hide();
+      // $("#ask1").hide();
+      // $("#ask2").hide();
       $("#send").click(function(){
          var e = document.getElementById("ID");
          var value = e.value;
@@ -43,16 +45,29 @@
             data: {ID : value, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
             success: function(data) {
                if (data.name != "Not found"){
-                  $("#ask1").hide();
-                  $("#ask2").hide();
-                  document.getElementById("q1").innerHTML = "are you " + data.name + " ?";
-                  $("#ask1").show();
+                  // $("#ask1").hide();
+                  // $("#ask2").hide();
+                  // document.getElementById("q1").innerHTML = "are you " + data.name + " ?";
+                  // $("#ask1").show();
+                  var message = "請問你是" + data.name + "嗎？"
+                  var check = confirm(message)
+                  if(check){
+                     location.href = '{% url 'login' %}';
+                  }
+                  else{
+                     document.getElementById("ID").value = "";
+                     alert("請重新填寫身分證字號")
+                  }
+
                }
                else{
-                  $("#ask1").hide();
-                  $("#ask2").hide();
-                  document.getElementById("q2").innerHTML = "Not found!!";
-                  $("#ask2").show();
+                  // $("#ask1").hide();
+                  // $("#ask2").hide();
+                  // document.getElementById("q2").innerHTML = "Not found!!";
+                  // $("#ask2").show();
+                  document.getElementById("ID").value = "";
+                  alert("查無此人資料，請重新填寫或新增")
+
                }
                
          }});
