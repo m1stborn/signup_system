@@ -100,6 +100,11 @@ def logout(request):
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
+
+def query(request):
+	online = Visit_logs.objects.all().filter(is_out = False)
+	print(online)
+	return render(request, 'trips/query.html' ,{'visit_logs':online})
 # def Q_in(request):
 # 	print("come")
 # 	if request.method == "POST":
