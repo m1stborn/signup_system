@@ -16,14 +16,14 @@
 		<div>
 			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
 		</div>
-		<!-- <div> -->
-			<!-- <input type="text" id="ID" name="ID" placeholder="ID" autocomplete="off"/> -->
-		<!-- </div> -->
 		<div>
-			<input type="text" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off"/>
+			<input type="text" id="ID" name="ID" placeholder="ID" autocomplete="off" maxlength="10" />
 		</div>
 		<div>
-			<input type="text" id="Email" name="Email" placeholder="Email" autocomplete="off"/>
+			<input type="tel" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off" maxlength="10" />
+		</div>
+		<div>
+			<input type="email" id="Email" name="Email" placeholder="Email" autocomplete="off" maxlength="30" />
 		</div>
 		<div class="col-md-6" id="select-org">
 			<select id="select" class="form-control">
@@ -64,44 +64,46 @@
 			});
 			$("#check").click(function(){
 				 var Name = document.getElementById("Name").value;
+				 var ID = document.getElementById("ID").value;
 				 var Phone_number = document.getElementById("Phone_number").value;
 				 var Email = document.getElementById("Email").value;
 				 var OrgName = document.getElementById("Org_name").value;
 				 var Fax = document.getElementById("Fax").value;
-				 alert("check");
-				 if ((Name =="")|| (Phone_number =="")|| (Email=="")){
-					alert("???????????");
+				 if ((Name =="")|| (Phone_number =="")|| (Email=="")|| (ID=="")){
+					alert("請輸入完整資訊");
 					return false;
 				 }
 				 else if((org_click==false) && (org_name_select =="")){
-					alert("???????????");
+					alert("請輸入完整資訊");
 					return false;
 				 }
 				 else if(org_click==true){
 					if ((OrgName =="")|| (Fax =="")){
-						alert("???????????");
+						alert("請輸入完整資訊");
 						return false;
 					}
 					else{
 						 $.ajax({
 							type: "post",
-							data: {Org_name:org_name_select, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+							data: {Org_name:org_name_select, ID:ID, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
 							success: function(data) {
-								alert("success");
+								var message = Name + "和" + OrgName + "新增成功";
+								alert(message);
+								location.href = '{% url 'login' %}';
 							}
 						 });
-						 <!-- window.location.href = '{% url 'login' %}'; -->
 					}
 				 }
 				 else{
 					 $.ajax({
 						type: "post",
-						data: {Org_name:org_name_select, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
+						data: {Org_name:org_name_select, ID:ID, Name:Name, Phone_number:Phone_number, Email:Email, OrgName:OrgName,FAX:Fax, 'csrfmiddlewaretoken': '{{ csrf_token }}',},
 						success: function(data) {
-							alert("success");
+							var message = Name + "新增成功";
+							alert(message);
+							location.href = '{% url 'login' %}';
 						}
 					 });
-					 <!-- window.location.href = '{% url 'login' %}'; -->
 				 }
 			});
 		});

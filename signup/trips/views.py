@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
 from django.http import HttpResponseRedirect, JsonResponse
@@ -15,7 +16,6 @@ def checkID(request):
 	if request.method == "POST":
 		ID = request.POST['ID']
 		if not request.session.session_key:
-			# print('create session_key')
 			request.session.create()	
 		request.session['ID'] = ID
 		try: 
@@ -26,6 +26,7 @@ def checkID(request):
 			name = result.name
 		else:
 			name = "Not found"
+		print("Get visitor name")
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request,'trips/checkID.html',{})
 
@@ -41,8 +42,8 @@ def login(request):
 		Visit_area = request.POST['visit_area']
 		Host = request.POST['host']
 		Key = request.POST['key']
-		Login_time = timezone.localtime()
 		Is_out = False
+		Login_time = timezone.localtime()
 		Logout_time = timezone.localtime()
 		#force logout
 		try:
@@ -59,31 +60,26 @@ def login(request):
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
-	print(request.session['ID'])
-	if request.method=="POST":
-		print("getpost")
-		print(request.POST['Org_name'])
-		print(request.POST['Email'])
+	if request.method=="POST":	 
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
-		Personal_ID = request.session['ID']
+		Personal_ID = request.POST['ID']
 		Org_name = request.POST['Org_name']
+		print("Get Post")
 		if request.POST['Org_name']!='':
 			org = Organizations.objects.get(org_name=Org_name)
-		print(request.POST['FAX'])
+			print("Get exist org")
 		if request.POST['OrgName']!='':
-			print("this")
 			OrgName = request.POST['OrgName']
 			Org_url = "https://docs.djangoproject.com/en/2.1/topics/db/queries/"
 			FAX = request.POST['FAX']
 			org = Organizations(org_name=OrgName, org_url = Org_url, FAX = FAX)
 			org.save()
+			print("Create org")
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
 		visit.save()
-		# return render(request,'trips/login.html',{})
-		print("yes")
-		return redirect('login')
+		print("Create visitor")
 	all_objects = Organizations.objects.all()
 	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
@@ -104,11 +100,6 @@ def logout(request):
 		print(name)
 		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
-
-def query(request):
-	online = Visit_logs.objects.all().filter(is_out = False)
-	print(online)
-	return render(request, 'trips/query.html' ,{'visit_logs':online})
 
 # def Q_in(request):
 # 	print("come")
