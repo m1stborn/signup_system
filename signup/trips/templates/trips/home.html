@@ -18,6 +18,7 @@ bottom:20px;
 
 }
 </style>
+
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B" onload="ShowTime()">
 	<center>
 		<h1>國家實驗研究院科技政策研究與資訊中心</h1>
@@ -30,10 +31,10 @@ bottom:20px;
 	<div id="showbox" class="div_right_bottom"></div>
 
 <script type="text/javascript">
-function ShowTime(){
-  d = new Date();
-　document.getElementById('showbox').innerHTML = "現在時間：" + d.toLocaleString();
-　setTimeout('ShowTime()',1000);
+function ShowTime() {
+    d = new Date();
+    document.getElementById('showbox').innerHTML = "現在時間：" + d.toLocaleString();
+    setTimeout('ShowTime()', 1000);
 }
 </script>
 

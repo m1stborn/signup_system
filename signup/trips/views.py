@@ -50,6 +50,7 @@ def login(request):
 		except Visit_logs.DoesNotExist:
 			result = None
 		if result:
+			print("result")
 			Visit_logs.objects.filter(key=Key, is_out=False).update(is_out=True, logout_time=Logout_time)
 		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
@@ -65,6 +66,9 @@ def addID(request):
 		Email = request.POST['Email']
 		Personal_ID = request.POST['ID']
 		Org_name = request.POST['Org_name']
+		if not request.session.session_key:
+			request.session.create()	
+		request.session['ID'] = Personal_ID
 		print("Get Post")
 		if request.POST['Org_name']!='':
 			org = Organizations.objects.get(org_name=Org_name)
@@ -91,106 +95,20 @@ def logout(request):
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
 		Key = request.POST['key']
+		ID_lastfour = request.POST['ID']
+		name = "Not found"
+		check = False
 		try: 
 			result = Visit_logs.objects.get(key=Key, is_out=False)
 		except Visit_logs.DoesNotExist:
 			result = None
 		if result:
 			name = result.name
-			print(name, "use right qrcode and key is", Key)
-			Visit_logs.objects.filter(name=name).update(is_out=True, logout_time=Logout_time)
-		else:
-			name = "Not found"
-		print(name)
-		return HttpResponse(json.dumps({'name': name}), content_type="application/json")
+			ID = Visitors.objects.get(name=name).personal_ID
+			if ID[-4:] == ID_lastfour:
+				check = True
+				print(name, "use right qrcode and key is", Key)
+				Visit_logs.objects.filter(name=name).update(is_out=True, logout_time=Logout_time)
+		print(name, check)
+		return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
-
-# def Q_in(request):
-# 	print("come")
-# 	if request.method == "POST":
-# 		print(request.POST['pk'])
-# 		print(request.POST['key'])
-# 	return render(request, 'trips/test3.html',{})
-
-# def getImg(request):
-# 	if request.method == "POST":
-# 		Name = form.cleaned_data['Name']
-#         Company = form.cleaned_data['Company']
-#         Purpose = form.cleaned_data['Purpose']
-# 		str=json.dumps(request.POST).split('"')
-# 		getImg = vistor(signature = str[3],name=Name, company=Company, purpose=Purpose)
-# 		getImg.save()
-# 	return render(request, 'trips/byid.html',{})
-
-# def new(request):ya
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = VisitorForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#             Name = form.cleaned_data['Name']
-#             Company = form.cleaned_data['Company']
-#             Purpose = form.cleaned_data['Purpose']
-#             new = visitor(name=Name, company=Company, purpose=Purpose)
-#             new.save()
-#             print(form.cleaned_data)
-#             return HttpResponseRedirect('/Q_in/')
-
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-#         form = VisitorForm()
-
-#     return render(request, 'trips/enter.html', {'form': form})
-
-# def new(request):
-# 	if 'code' in request.GET:
-# 		print(request.GET['code'])
-# 		print("in")
-# 		# Name = request.GET['Name']
-# 		# Company = request.GET['Company']
-# 		# Purpose = request.GET['Purpose']
-# 		# new = visitor(name=Name, company=Company, purpose=Purpose)
-# 		# new.save()
-# 		return redirect('hello_world')
-# 	return render(request, 'trips/test3.html', {})
-
-# def getImg(request):
-# 	file_content = ContentFile(request.FILES['img'].read())
-# 	img = ImageStore(name = request.FILES['img'].name, img = request.FILES['img'])
-# 	img.save()
-
-
-# def new(request):
-#     # if this is a POST request we need to process the form data
-#     if request.method == 'POST':
-#         # create a form instance and populate it with data from the request:
-#         form = NameForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             print(form);
-#             # process the data in form.cleaned_data as required
-#             # ...
-#             # redirect to a new URL:
-#             return HttpResponseRedirect('/thanks/')
-
-#     # if a GET (or any other method) we'll create a blank form
-#     else:
-#         form = NameForm()
-
-#     return render(request, 'trips/enter.html', {'form': form})
-
-
-
-# def my_view(request):
-#     form = SignatureForm(request.POST or None)
-#     if form.is_valid():
-#         signature = form.cleaned_data.get('signature')
-#         if signature:
-#             # as an image
-#             signature_picture = draw_signature(signature)
-#             # or as a file
-#             signature_file_path = draw_signature(signature, as_file=True)
