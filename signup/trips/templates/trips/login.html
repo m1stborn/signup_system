@@ -80,10 +80,12 @@
                 $('.js-signature').jqSignature();
             }
         });
+
         function clearCanvas() {
             $('.js-signature').eq(0).jqSignature('clearCanvas');
         }
-        function nextStep(){
+
+        function nextStep() {
             // var dataUrl = $('.js-signature').eq(0).jqSignature('getDataURL');
             var purpose = document.getElementById("Purpose").value;
             var visit_area = document.getElementById("Visit_area").value;
@@ -92,7 +94,7 @@
                 alert("請填入完整資訊");
                 return false;
             }
-            location.href='#app';
+            location.href = '#app';
         }
     </script>
     <script type="text/javascript">
@@ -130,21 +132,20 @@
                         'host': host,
                         'csrfmiddlewaretoken': '{{ csrf_token }}',
                     }, function(data, status) {
-                        if(status=="success"){
+                        if (status == "success") {
                             var name = data.name + " 簽到成功";
                             alert(name);
-                        }
-                        else{
+                        } else {
                             alert("error");
                         }
                     });
-                    
+
                     var time = 1;
                     setInterval(function() {
                         if (time > 0) {
                             time--;
                         } else {
-                            location.href = "/"; 
+                            location.href = "/";
                         }
                     }, 1000)
                 });
