@@ -89,7 +89,6 @@ class Visit_logs(models.Model):
 
 class Organizations(models.Model):
 	org_name = models.CharField(max_length = 50)
-	org_url = models.URLField()
 	FAX = models.CharField(max_length = 20)
 	def __str__(self):
 		return self.org_name

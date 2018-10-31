@@ -75,9 +75,8 @@ def addID(request):
 			print("Get exist org")
 		if request.POST['OrgName']!='':
 			OrgName = request.POST['OrgName']
-			Org_url = "https://docs.djangoproject.com/en/2.1/topics/db/queries/"
 			FAX = request.POST['FAX']
-			org = Organizations(org_name=OrgName, org_url = Org_url, FAX = FAX)
+			org = Organizations(org_name=OrgName, FAX = FAX)
 			org.save()
 			print("Create org")
 		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
