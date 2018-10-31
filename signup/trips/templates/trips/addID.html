@@ -12,18 +12,18 @@
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
 	<form method="post" >
 		{% csrf_token %}
-		<p>個人資料</p>
+		<p>訪客資料</p>
 		<div>
-			<input type="text" id="Name" name="Name" placeholder="Your Name" autocomplete="off" />
+			訪客姓名：<input type="text" id="Name" name="Name" placeholder="王大明" autocomplete="off" />
 		</div>
 		<div>
-			<input type="text" id="ID" name="ID" placeholder="ID" autocomplete="off" maxlength="10" />
+			身分證字號：<input type="text" id="ID" name="ID" placeholder="A111111111" autocomplete="off" maxlength="10" />
 		</div>
 		<div>
-			<input type="tel" id="Phone_number" name="Phone_number" placeholder="Phone_number" autocomplete="off" maxlength="10" />
+			聯絡電話：<input type="tel" id="Phone_number" name="Phone_number" placeholder="0911111111" autocomplete="off" maxlength="10" />
 		</div>
 		<div>
-			<input type="email" id="Email" name="Email" placeholder="Email" autocomplete="off" maxlength="30" />
+			電子郵件：<input type="email" id="Email" name="Email" placeholder="test@gmail.com" autocomplete="off" maxlength="30" />
 		</div>
 		<div class="col-md-6" id="select-org">
 			<select id="select" class="form-control">
@@ -34,15 +34,15 @@
 			<input id="addorg" type="button" value="沒有您所屬的單位嗎? 請點此新增">
 		</div>
 		<div id="neworg">
-		<p>公司資料</p>
+		<p>服務單位</p>
 		<div>
-			<input type="text" id="Org_name" name="Org_name" placeholder="Org_name" autocomplete="off"/>
+			單位名稱：<input type="text" id="Org_name" name="Org_name" placeholder="公司名稱" autocomplete="off"/>
 		</div>
 		<div>
-			<input type="text" id="Fax" name="Fax" placeholder="Fax" autocomplete="off"/>
+			傳真號碼：<input type="text" id="Fax" name="Fax" placeholder="07-7777777" autocomplete="off"/>
 		</div>
 		</div>
-	    <input type="button" id="check" value="confirm">
+	    <input type="button" id="check" value="送出">
 	</form>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
