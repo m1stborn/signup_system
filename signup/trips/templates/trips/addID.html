@@ -1,7 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
+<style type="text/css">
+section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+</style>
 <head>
 	<meta charset="utf-8">
 	<!-- Stylesheets -->
@@ -13,38 +21,41 @@
 </head>
 
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
-	<form method="post" >
-		{% csrf_token %}
+	<section>	
+		<form method="post" >
+			{% csrf_token %}
 
-		<div id="dialog-modal" title="提醒">
-			<p>*本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</p>
-			<p>*本中心為達場所進出人員的安全管理之目的，搜集個人資料之類別為C001及C061，包含訪客的姓名、服務單位、及聯絡電話等資料。本中心將於營運期間及地區內以訪客個資作為安全管理之用，必要時，將利用訪客電話進行聯絡。訪客可以電洽本中心行使個資法第3條的當事人權利之程序。</p>
-		</div>
-		<p>訪客資料</p>
-		<table>
-			<tr><td width="110">訪客姓名：</td><td><input type="text" id="Name" name="Name" placeholder="王大明" autocomplete="off" size="22" /></td><tr>
-			<tr><td >身分證字號：</td><td><input type="text" id="ID" name="ID" placeholder="A123456789" autocomplete="off" maxlength="10" size="22"/></td></tr>
-			<tr><td>聯絡電話：</td><td><input type="tel" id="Phone_number" name="Phone_number" placeholder="0912345678 or 02-1234567" autocomplete="off" maxlength="10" size="22"/></td></tr>
-			<tr><td>電子郵件：</td><td><input type="email" id="Email" name="Email" placeholder="example@gmail.com" autocomplete="off" maxlength="30" size="22"/></td></tr>
-		
-		<!-- <div class="col-md-5" id="select-org"> -->
-			<tr id="select-org"><td valign="top">所屬單位：</td><td><select id="select" class="form-control" >
-				{% for objects in all_objects %}
-					<option>{{ objects.org_name }}</option>
-				{% endfor %}
-			</select><button id="addorg" type="button" class="btn btn-link">無您所屬單位?</button></td></tr>
-		</table>
-		<!-- </div> -->
-		
-		<div id="neworg">
-		<p>服務單位</p>
-		<table>
-			<tr><td width="110">單位名稱：</td><td><input type="text" id="Org_name" name="Org_name" placeholder="STPI" autocomplete="off" size="22"/></td></tr>
-			<tr><td>傳真號碼：</td><td><input type="text" id="Fax" name="Fax" placeholder="02-1234567" autocomplete="off" size="22"/></td></tr>
-		</table>
-		</div>
-	    <input type="button" id="check" value="送出">
-	</form>
+			<div id="dialog-modal" title="提醒">
+				<p>*本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</p>
+				<p>*本中心為達場所進出人員的安全管理之目的，搜集個人資料之類別為C001及C061，包含訪客的姓名、服務單位、及聯絡電話等資料。本中心將於營運期間及地區內以訪客個資作為安全管理之用，必要時，將利用訪客電話進行聯絡。訪客可以電洽本中心行使個資法第3條的當事人權利之程序。</p>
+			</div>
+			<p>訪客資料</p>
+			<table>
+				<tr><td width="110">訪客姓名：</td><td><input type="text" id="Name" name="Name" placeholder="王大明" autocomplete="off" size="22" /></td><tr>
+				<tr><td >身分證字號：</td><td><input type="text" id="ID" name="ID" placeholder="A123456789" autocomplete="off" maxlength="10" size="22"/></td></tr>
+				<tr><td>聯絡電話：</td><td><input type="tel" id="Phone_number" name="Phone_number" placeholder="0912345678 or 02-1234567" autocomplete="off" maxlength="10" size="22"/></td></tr>
+				<tr><td>電子郵件：</td><td><input type="email" id="Email" name="Email" placeholder="example@gmail.com" autocomplete="off" maxlength="30" size="22"/></td></tr>
+			
+			<!-- <div class="col-md-5" id="select-org"> -->
+				<tr id="select-org"><td valign="top">所屬單位：</td><td><select id="select" class="form-control" >
+					{% for objects in all_objects %}
+						<option>{{ objects.org_name }}</option>
+					{% endfor %}
+				</select><button id="addorg" type="button" class="btn btn-link">無您所屬單位?</button></td></tr>
+			</table>
+			<!-- </div> -->
+			
+			<div id="neworg">
+			<p>服務單位</p>
+			<table>
+				<tr><td width="110">單位名稱：</td><td><input type="text" id="Org_name" name="Org_name" placeholder="STPI" autocomplete="off" size="22"/></td></tr>
+				<tr><td>傳真號碼：</td><td><input type="text" id="Fax" name="Fax" placeholder="02-1234567" autocomplete="off" size="22"/></td></tr>
+			</table>
+			</div>
+		    <input type="button" id="check" value="送出">
+		</form>
+	</section>
+
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script src="https://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="https://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
