@@ -22,16 +22,28 @@ section {
    <link rel="stylesheet" href="{% static "grayscale.css"%}" > -->
 
 </head>
+<style type="text/css">
+section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+</style>
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
 
-   <section>
-         <div>
-            請輸入身分證字號：
-            <input type="aaa" id="ID" name="ID" class="form-control" size="20" type="text" maxlength="10" minlength="10">
-            <button id="send" class="btn btn-primary btn-lg">送出</button>
-            <a href="/addID">新增</a> 
-         </div>
-   </section>
+	<section>
+	<table>
+      <tr><td style="font-size:45px;">
+         請輸入身分證字號：</td>
+         <td><input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" style="width: 400px; height: 80px;font-size:45px;"></td>
+         <td><button id="send" style="font-size:35px;">送出</button></td></tr>
+         <tr><td></td><td></td><td align="center"><a href="/addID" style="font-size:35px;">新增</a></td></tr> 
+   
+	</table>
+	</section>
+
 
 <!-- <div id="contact">
   <div class="container">
