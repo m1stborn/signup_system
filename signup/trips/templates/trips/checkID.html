@@ -1,6 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+<style type="text/css">
+section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+</style>
 <head>
    <title></title>
    <script src="{% static "jquery.min.js"%}"></script>
@@ -9,17 +18,20 @@
    <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
    <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
    <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
-<!--    <link rel="stylesheet" href="{% static "style.css"%}" > -->
+<!--    <link rel="stylesheet" href="{% static "bootstrap.min.css"%}" >
+   <link rel="stylesheet" href="{% static "grayscale.css"%}" > -->
 
 </head>
 <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
-      <div style="font-size:50px;height: 100vh;margin: 0px auto;">
-         請輸入身分證字號：
-         <input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" style="width: 300px; height:100px; font-size: 50px">
-         <button id="send" style="width:120px;height:100px;font-size:50px;">送出</button>
-         <a href="/addID">新增</a> 
-      </div>
-      
+
+   <section>
+         <div>
+            請輸入身分證字號：
+            <input type="aaa" id="ID" name="ID" class="form-control" size="20" type="text" maxlength="10" minlength="10">
+            <button id="send" class="btn btn-primary btn-lg">送出</button>
+            <a href="/addID">新增</a> 
+         </div>
+   </section>
 
 <!-- <div id="contact">
   <div class="container">
