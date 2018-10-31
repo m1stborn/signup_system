@@ -67,28 +67,40 @@ def login(request):
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
-	if request.method=="POST":	 
+	if request.method=="POST":	
+		Personal_ID = request.POST['ID']
 		Name = request.POST['Name']
 		Phone_number = request.POST['Phone_number']
 		Email = request.POST['Email']
-		Personal_ID = request.POST['ID']
-		Org_name = request.POST['Org_name']
+		Org_name = request.POST['org_Name']
 		if not request.session.session_key:
 			request.session.create()	
 		request.session['ID'] = Personal_ID
 		print("Get Post")
-		if request.POST['Org_name']!='':
+		if request.POST['new_Org_Name']=='':
 			org = Organizations.objects.get(org_name=Org_name)
 			print("Get exist org")
-		if request.POST['OrgName']!='':
-			OrgName = request.POST['OrgName']
-			FAX = request.POST['FAX']
-			org = Organizations(org_name=OrgName, FAX = FAX)
-			org.save()
-			print("Create org")
-		visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
-		visit.save()
-		print("Create visitor")
+		else:
+			new_Org_Name = request.POST['new_Org_Name']
+			try:
+				result = Organizations.objects.get(org_name=new_Org_Name)
+				org = result
+				print("org already exist")
+			except Organizations.DoesNotExist:
+				result = None
+				FAX = request.POST['FAX']
+				org = Organizations(org_name=new_Org_Name, FAX=FAX)
+				org.save()
+				print("Create org")
+		try:
+			exist = Visitors.objects.filter(personal_ID=Personal_ID)
+			exist.update(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
+			visit = Visitors.objects.get(personal_ID=Personal_ID)
+			print("visitor already exist")
+		except Visitors.DoesNotExist:
+			visit = Visitors(name=Name, org_ID=org, phone_number=Phone_number, email=Email, personal_ID=Personal_ID)
+			visit.save()
+			print("Create visitor")
 	all_objects = Organizations.objects.all()
 	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 

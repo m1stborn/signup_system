@@ -4,7 +4,7 @@
 <style type="text/css">
 section {
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%) 
@@ -21,18 +21,17 @@ section {
 	<link rel="stylesheet" href="{% static "bootstrap.min.css"%}" >
 	<link rel="stylesheet" href="{% static "grayscale.css"%}" >
 </head>
-<style type="text/css">
-
-</style>
-
-<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B" onload="ShowTime()">
 
 
-	<section>	
+<body  onload="ShowTime()" style="background-color:#CCCCCC;"" >
+	<div style="margin:100px;">
 		<center>
 			<h1>國家實驗研究院科技政策研究與資訊中心</h1>
 			<h1>訪客進出系統</h1>
 		</center>
+	
+	<section>	
+
 		<div class="container d-flex h-100 align-items-center">
 			<div class="mx-auto text-center">
           		<button class="btn btn-primary btn-lg" onclick="window.location.href='{% url 'checkID' %}'" style="width:200px; height:100px; font-size: 30px;">簽到</button>
@@ -40,6 +39,7 @@ section {
         	</div>
 		</div>
 	</section>
+	</div>
 	<div id="showbox" class="div_right_bottom"></div>
 
 <script type="text/javascript">
