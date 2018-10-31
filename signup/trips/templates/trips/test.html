@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+	section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) }
+</style>
+<style type="text/css">
+.div_right_bottom {
+width:300px;
+float:right;
+position:fixed;
+right:0px;
+bottom:20px;
+}
+</style>
+<head>
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+</head>
+
+<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B" onload="ShowTime()">
+	<div>123</div>
+	<script type="text/javascript">
+		function ShowTime(){
+  			d = new Date();
+			document.getElementById('showbox').innerHTML = "現在時間：" + d.toLocaleString();
+			setTimeout('ShowTime()',1000);
+		}
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
