@@ -112,3 +112,15 @@ def logout(request):
 		print(name, check)
 		return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
+
+def confirm(request):
+	ID = request.session['ID']
+	name = Visitors.objects.get(personal_ID=ID).name
+	try: 
+		result = Visit_logs.objects.get(name=name, is_out=False)
+	except Visitors.DoesNotExist:
+		result = None
+	return render(request, 'trips/confirm.html',{'result':result})
+
+
+
