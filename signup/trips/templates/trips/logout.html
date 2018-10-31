@@ -8,14 +8,16 @@
     <script src="{% static "jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "vue.min.js" %}"></script>
     <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "bootstrap.min.css"%}" >
 </head>
 
-<body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B">
+<!-- <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B"> -->
+<body>
     <center>
-    <div id="app" style="height: 100vh">
+    <div id="app" style="height: 100vh ">
         <div class="sidebar">
             <section class="scans">
-                <h2>請掃描QR code</h2>
+                <h2>請掃描識別證後方的QR code</h2>
                 <!-- print content -->
                 <!-- <ul v-if="scans.length === 0">
                     <li class="empty">No scans yet</li>

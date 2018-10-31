@@ -50,8 +50,15 @@ def login(request):
 		except Visit_logs.DoesNotExist:
 			result = None
 		if result:
-			print("result")
+			print("key")
 			Visit_logs.objects.filter(key=Key, is_out=False).update(is_out=True, logout_time=Logout_time)
+		try:
+			result = Visit_logs.objects.filter(name=Name, is_out=False)
+		except Visit_logs.DoesNotExist:
+			result = None
+		if result:
+			print("Name")
+			Visit_logs.objects.filter(name=Name, is_out=False).update(is_out=True, logout_time=Logout_time)
 		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
