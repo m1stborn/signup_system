@@ -12,9 +12,9 @@
 </head>
 
 <!-- <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B"> -->
-<body>
+<body style="background-color:#CCCCCC;">
     <center>
-    <div id="app" style="height: 100vh ">
+    <div id="app" style="height:100vh; margin:10vh; ">
         <div class="sidebar">
             <section class="scans">
                 <h2>請掃描識別證後方的QR code</h2>
@@ -66,7 +66,7 @@
                         if (data.name != "Not found" && data.check) {
                             var message = data.name + " 簽退成功";
                             alert(message);
-                            location.href = "/";
+                            location.href = "/logout_confirm";
                         } else {
                             alert("請輸入 正確驗證碼 及 QR code 以完成簽退流程");
                             return false;

@@ -1,6 +1,6 @@
 #_*_coding:utf8_*_
 from django.urls import path
-from .views import login, logout, home, checkID, addID , query, confirm
+from .views import login, logout, home, checkID, addID , query, confirm, logout_confirm
 urlpatterns = [
 	path('', home, name='home'),
     path('login', login, name='login'),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('checkID',checkID, name='checkID'),
     path('addID', addID, name='addID'),
     path('query', query, name='query'),
-    path('confirm', confirm, name="confirm")
+    path('confirm', confirm, name="confirm"),
+    path('logout_confirm', logout_confirm, name="logout_confirm" )
 ]

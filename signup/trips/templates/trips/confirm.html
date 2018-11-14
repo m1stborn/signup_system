@@ -15,8 +15,10 @@
 		}
 	</style>
 </head>
-<body >
-
+<body>
+<div>
+<span id="show"></span>
+</div>
 <div style="background-color:#FFD382;padding:10px;margin-bottom:5px;">
 	<ul>
 		<li>本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</li>
@@ -40,6 +42,10 @@
     <td>{{result.get_visit_area_display}}</td>
   </tr>
   <tr>
+    <th>拜訪目的</th>
+    <td>{{result.get_purpose_display}}</td>
+  </tr>
+  <tr>
     <th>接洽同仁</th>
     <td>{{result.get_host_display}}</td>
   </tr>
@@ -47,6 +53,15 @@
     <th>簽到時間</th>
     <td><font color="red">{{result.login_time|date:'Y-m-d H:i'}}</font></td>
   </tr>
+   <tr>
+    <th>簽退時間</th>
+    {% if result.login_time|date:'Y-m-d H:i:s' == result.logout_time|date:'Y-m-d H:i:s' %}
+    <td>尚未簽退</font></td>
+    {% else %}
+    <td><font color="red">{{result.logout_time|date:'Y-m-d H:i'}}</font></td>
+    {% endif %}
+  </tr> 
+  
 </table>
 </div>
 
@@ -56,19 +71,18 @@
 
 
  <script language="javascript">
- 	var time = 3;
-	setInterval(function() {
-		if (time == 3){
-			alert('將在'+time+'秒後自動跳轉到首頁') ;
-		}
-		if (time > 0) {
-			time--;
-		} else {
-			location.href = "/";
-		}
+  　var t=3;//設定跳轉的時間
+　　setInterval("refer()",1000); //啟動1秒定時
+　　function refer(){
+　　　　if(t==0){
+　　　　　　location.href="/"; //#設定跳轉的鏈接地址
+　　　　}
+　　　　document.getElementById('show').innerHTML=""+t+"秒後自動跳轉"; // 顯示倒計時
+　　　　t--; // 計數器遞減
+　　　　//本文轉自：
+　　}
+</script>
 
-	}, 1000);
- </script>
 
 
 
