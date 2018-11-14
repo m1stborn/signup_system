@@ -129,11 +129,11 @@ section {
 
    <div class="loginmodal-container">
    		<div>
-     	 <h1>請輸入訪客資料</h1><br>
+     	 <h1>訪客資料</h1><br>
 			<table align="center">
-				<tr><td width="110px">訪客姓名：</td><td><input type="text" id="Name" name="Name" placeholder="王大明" autocomplete="off"/></td></tr>
+				<tr><td width="110px">訪客姓名：</td><td><input type="text" id="Name" name="Name" placeholder="王大明" autocomplete="off" required/></td></tr>
 				<tr><td >身分證字號：</td><td><input type="text" id="ID" name="ID" placeholder="A123456789" autocomplete="off" maxlength="10" minlegth="10"></td></tr>
-				<tr><td>聯絡電話：</td><td><input type="tel" id="Phone_number" name="Phone_number" placeholder="0912345678 or 02-1234567" autocomplete="off" maxlength="10"/></td></tr>
+				<tr><td>聯絡電話：</td><td><input type="tel" id="Phone_number" name="Phone_number" placeholder="0912345678" autocomplete="off" maxlength="10"/></td></tr>
 				<tr><td>電子郵件：</td><td><input type="email" id="Email" name="Email" placeholder="example@gmail.com" autocomplete="off" maxlength="30"/></td></tr>
 			
 				<tr id="select_Org"><td>所屬單位：</td><td><select id="select" class="form-control" >
@@ -147,7 +147,7 @@ section {
 			</div>
 		</div>
 		<div id="new_Org">
-		<h1>請輸入服務單位</h1><br>
+		<h1>所屬單位</h1><br>
 			<table align="center">
 				<tr><td width="110px">單位名稱：</td><td><input type="text" id="new_Org_Name" name="new_Org_Name" placeholder="STPI" autocomplete="off"/></td></tr>
 				<tr><td>傳真號碼：</td><td><input type="text" id="Fax" name="Fax" placeholder="02-1234567" autocomplete="off" maxlength="10"/></td></tr>
@@ -162,7 +162,7 @@ section {
       </div> -->
    </div>
 
-   	<div id="dialog-modal" title="提醒">
+   	<div id="dialog-modal" title="個資蒐集提醒事項">
 	<ul>
 		<li>本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</li>
 		<li>本中心為達場所進出人員的安全管理之目的，搜集個人資料之類別為C001及C061，包含訪客的姓名、服務單位、及聯絡電話等資料。本中心將於營運期間及地區內以訪客個資作為安全管理之用，必要時，將利用訪客電話進行聯絡。訪客可以電洽本中心行使個資法第3條的當事人權利之程序。</li>
