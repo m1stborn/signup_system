@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+i#!/usr/bin/env python
 import os
 import sys
 import pymysql
@@ -14,4 +14,8 @@ if __name__ == "__main__":
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+    #
+    from django.core.management.commands.runserver import Command as runserver
+    runserver.default_port = "80"
+    #
     execute_from_command_line(sys.argv)
