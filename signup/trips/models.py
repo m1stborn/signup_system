@@ -9,16 +9,10 @@ class Visit_logs(models.Model):
     class Purpose(object):
         one = 0
         two = 1
-        three = 2
-        four = 3
-        five = 4
 
     PURPOSE_CHOICES = (
-        (Purpose.one, '例行維護'), 
-        (Purpose.two, '故障檢修'),  
-        (Purpose.three, '設備安裝'),
-        (Purpose.four, '環境施工'),
-        (Purpose.five, '商務拜訪'),
+        (Purpose.one, '技術性作業'), 
+        (Purpose.two, '拜訪及會議討論'),
     )
 
     purpose = models.PositiveSmallIntegerField(
@@ -28,14 +22,10 @@ class Visit_logs(models.Model):
 
     class Visit_area(object):
         office = 0
-        seminar = 1
-        work = 2
-        computer = 3
+        computer = 1
 
     VISIT_AREA_CHOICES = (
-        (Visit_area.office, '辦公室'), 
-        (Visit_area.seminar, '研討室'),  
-        (Visit_area.work, '工作區'),
+        (Visit_area.office, '辦公區域'),
         (Visit_area.computer, '電腦機房'),
     )
 
