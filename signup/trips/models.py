@@ -3,8 +3,8 @@ import django.utils.timezone as timezone
 
 # Create your models here.
 class Visit_logs(models.Model):
-    name = models.TextField(max_length = 200)
-    company = models.TextField(max_length = 30)
+    name = models.TextField(max_length = 200,editable=False)
+    company = models.TextField(max_length = 30,editable=False)
 
     class Purpose(object):
         one = 0
@@ -73,7 +73,7 @@ class Visit_logs(models.Model):
     key = models.TextField(max_length=200, default=0)
     is_out = models.BooleanField(default=True)
     login_time = models.DateTimeField(default=timezone.now)
-    logout_time = models.DateTimeField(default=timezone.now)
+    logout_time = models.DateTimeField(null=True)
     class Meta:
         verbose_name_plural = "訪客紀錄"
     def __str__(self):
@@ -82,6 +82,8 @@ class Visit_logs(models.Model):
 class Organizations(models.Model):
 	org_name = models.CharField(max_length = 50)
 	FAX = models.CharField(max_length = 20)
+	class Meta:
+		verbose_name_plural = "公司資訊"
 	def __str__(self):
 		return self.org_name
 		
@@ -91,5 +93,7 @@ class Visitors(models.Model):
 	email = models.EmailField(default='example@gmail.com')
 	personal_ID = models.CharField(max_length = 10,blank = True)
 	org_ID = models.ForeignKey(Organizations, on_delete=models.CASCADE, null=True)
+	class Meta:
+		verbose_name_plural = "個人資訊"
 	def __str__(self):
 		return self.name

@@ -32,14 +32,18 @@ class Visit_logAdmin(admin.ModelAdmin):
 	ordering = ('-login_time',)
 	search_fields = ('name','company',)
 	list_display = ('name' ,'company','login_time','logout_time','is_out')
-	list_editable = ('login_time','logout_time','company')
-	list_filter = ('company',('login_time',DateRangeFilter),'is_out','host')
-
+	# list_editable = ('login_time','logout_time')
+	list_filter = (('login_time'),'is_out','host')
+	readonly_fields = ('name','company',)
+	fields = ('name','company','purpose','visit_area','host','key','is_out','login_time','logout_time',)
+	# exclude = ('signature',)
 	actions = ['make_out']
 
 	def make_out(self, request, queryset):
 		queryset.update(is_out=True)
 	make_out.short_description = "訪客登出"
 	# readonly_fields = ['company','visit_area','purpose','login_time','host']
-
+	class Media:
+		js = ("autorefresh.js",)
 admin.site.register(Visit_logs,Visit_logAdmin)
+# admin.sites.AdminSite.site_url = "http://localhost:8000/admin/trips/visit_logs/?drf__login_time__gte=2018-11-28&drf__login_time__lte="
