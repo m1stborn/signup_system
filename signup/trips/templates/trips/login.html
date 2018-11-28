@@ -3,206 +3,93 @@
 <html>
 
 <head>
+    <title>訪客簽到流程</title>
     <script src="{% static "jquery.min.js"%}"></script>
     <script src="{% static "jq-signature.js"%}"></script>
     <script src="{% static "jq-signature.min.js"%}"></script>
     <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
     <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
     <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
+       <link rel="stylesheet" href="{% static "trips/login.css"%}">
+   <script type="text/javascript" src="{% static "trips/checkID.js"%}"></script>
 </head>
 
-<style type="text/css">
-    .loginmodal-container {
-  padding: 30px;
-  max-width: 600px;
-  width: 100% !important;
-  height: 600px;
-  background-color: #F7F7F7;
-  margin: 0 auto;
-  border-radius: 2px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  font-family: roboto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
 
-.loginmodal-container h1 {
-  text-align: center;
-  font-size: 1.8em;
-  font-family: roboto;
-}
-
-.loginmodal-container input[type=submit] {
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-  position: relative;
-}
-
-.loginmodal-container input[type=text], input[type=tel], input[type=email], select{
-  height: 44px;
-  font-size: 16px;
-  width: 200px;
-  margin-bottom: 10px;
-  -webkit-appearance: none;
-  background: #fff;
-  border: 1px solid #d9d9d9;
-  border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
-  padding: 0 8px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-
-.loginmodal-container input[type=text]:hover, input[type=password]:hover {
-  border: 1px solid #b9b9b9;
-  border-top: 1px solid #a0a0a0;
-  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.loginmodal {
-  text-align: center;
-  font-size: 14px;
-  font-family: 'Arial', sans-serif;
-  font-weight: 675;
-  height: 36px;
-  padding: 0 8px;
-/* border-radius: 3px; */
-/* -webkit-user-select: none;
-  user-select: none; */
-}
-
-.loginmodal-submit {
-  /* border: 1px solid #3079ed; */
-  border: 0px;
-  color: #fff;
-  text-shadow: 0 1px rgba(0,0,0,0.1); 
-  background-color: #4d90fe;
-  padding: 17px 0px;
-  font-family: roboto;
-  font-size: 14px;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
-}
-
-.loginmodal-submit:hover {
-  /* border: 1px solid #2f5bb7; */
-  border: 0px;
-  text-shadow: 0 1px rgba(0,0,0,0.3);
-  background-color: #357ae8;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
-}
-
-.loginmodal-container a {
-  text-decoration: none;
-  color: #666;
-  font-weight: 400;
-  text-align: center;
-  display: inline-block;
-  opacity: 0.6;
-  transition: opacity ease 0.5s;
-} 
-
-.login-help{
-  font-size: 12px;
-}
-</style>
-<!-- <div id="contact">
-  <div class="container">
-    <div class="head">
+<body onload="ShowTime()" style="background-color:#CCCCCC;">
+    <div class="div_right_top">
+        <a href="/">回首頁</a>
     </div>
-            <div >
-            進入目的：
-            <select id="Purpose" style="width: 250px; height:60px; font-size: 40px">   
-                <option value="" selected></option>
-                <option value="one">例行維護</option>
-                <option value="two">故障檢修</option>
-                <option value="three">設備安裝設定</option>
-                <option value="four">環境施工</option>
-                <option value="five">商務拜訪</option>
-                <option value="five">其他</option>
-            </select>
-        </div>
-    <input  type="email" name="email" placeholder="Email" /><br />
-    <textarea type="text" name="message" placeholder="Message"></textarea><br />
-    <div class="message">Message Sent</div>
-    <button id="submit" type="submit">
-      Send!
-    </button>
-  </div>
-</div> -->
-<body style="background-color:#CCCCCC;">
-<!-- <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B"> -->
-    <div id="first" class="container" style="height: 100vh;">
+    <div class="container" id="first" style="height: 100vh;">
         <div class="loginmodal-container">
             <h1>請選擇拜訪資訊</h1>
             <table>
-                <tr><td>進入目的：</td><td>
-                <select id="Purpose" >   
-                    <option value="" selected></option>
-                    <option value="0">技術性作業</option>
-                    <option value="1">拜訪及會議討論</option>
-                </select></td></tr>
-
-                <tr><td>進出區域：</td><td>
-                <select id="Visit_area">
-                    <option value="" selected></option>
-                    <option value="0">辦公區域</option>
-                    <option value="1">電腦機房</option>
-                </select></td></tr>
-                <tr><td>接洽同仁：</td><td>
-                <select id="Host">
-                    <option value="" selected></option>
-                    <option value="0">黃百立</option>
-                    <option value="1">莊峻沛</option>
-                    <option value="2">金禹天</option>
-                    <option value="3">張麗環</option>
-                    <option value="4">吳宏德</option>
-                    <option value="5">鍾振明</option>
-                    <option value="6">吳坤達</option>
-                    <option value="7">黃俊銘</option>
-                    <option value="8">林彥廷</option>
-                    <option value="9">顏志宏</option>
-                    <option value="10">莊嘉怡</option>
-                    <option value="11">許純茹</option>
-                    <option value="12">張琇茵</option>
-                </select></td></tr>
-        </table>
-        <h4>請在下方空白處簽名</h4>
-        <div class="js-signature" data-width="600" data-height="250" data-border="1px solid black" data-line-color="#bc0000" data-auto-fit="false"></div>
-        
-<!--         //重新簽名 -->
-<!--         <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp; -->
-        <div style="text-align: center;">
-        <button id="saveBtn"  class="btn btn-default" onclick="nextStep();" style="width:100px;height:50px;font-size:15px;">下一步</button>
+                <tr>
+                    <td>進入目的：</td>
+                    <td><select id="Purpose">
+                        <option selected value=""></option>
+                        <option value="0">技術性作業</option>
+                        <option value="1">拜訪及會議討論</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>進出區域：</td>
+                    <td><select id="Visit_area">
+                        <option selected value=""></option>
+                        <option value="0">辦公區域</option>
+                        <option value="1">電腦機房</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td>接洽同仁：</td>
+                    <td><select id="Host">
+                        <option selected value=""></option>
+                        <option value="0">黃百立</option>
+                        <option value="1">莊峻沛</option>
+                        <option value="2">金禹天</option>
+                        <option value="3">張麗環</option>
+                        <option value="4">吳宏德</option>
+                        <option value="5">鍾振明</option>
+                        <option value="6">吳坤達</option>
+                        <option value="7">黃俊銘</option>
+                        <option value="8">林彥廷</option>
+                        <option value="9">顏志宏</option>
+                        <option value="10">莊嘉怡</option>
+                        <option value="11">許純茹</option>
+                        <option value="12">張琇茵</option>
+                    </select></td>
+                </tr>
+            </table>
+            <h4>請在下方空白處簽名</h4>
+            <div class="js-signature" data-auto-fit="false" data-border="1px solid black" data-height="250" data-line-color="#bc0000" data-width="600"></div><!--         //重新簽名 -->
+            <!--         <button id="clearBtn" class="btn btn-default" onclick="clearCanvas();">Clear</button>&nbsp; -->
+            <div style="text-align: center;">
+                <button class="btn btn-default" id="saveBtn" onclick="nextStep();" style="width:100px;height:50px;font-size:15px;">下一步</button>
+            </div>
         </div>
-        </div>
+        <div class="div_right_bottom" id="showbox"></div>
     </div>
 
     <div id="app" style="height:90vh">
+        <div class="div_right_top">
+            <a href="/">回首頁</a>
+        </div>
         <center>
-        <div class="sidebar">
-            <section class="scans">
-                <h2>請掃描識別證後方的QR code</h2>
-                <!-- print content -->
-                <!-- <ul v-if="scans.length === 0">
+            <div class="sidebar">
+                <section class="scans">
+                    <h2>請掃描識別證後方的QR code</h2><!-- print content -->
+                    <!-- <ul v-if="scans.length === 0">
                     <li class="empty">No scans yet</li>
                 </ul>
                 <transition-group name="scans" tag="ul">
                     <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }</li>
                 </transition-group> -->
-            </section>
-        </div>
-
-        <div class="preview-container">
-            <video id="preview"></video>
-        </div>
+                </section>
+            </div>
+            <div class="preview-container">
+                <video id="preview"></video>
+            </div>
         </center>
+        <div class="div_right_bottom" id="showbox"></div>
     </div>
 
     <!-- Scripts -->
@@ -288,5 +175,4 @@
         });
     </script>
 </body>
-
 </html>

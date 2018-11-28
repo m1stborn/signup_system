@@ -73,7 +73,7 @@ class Visit_logs(models.Model):
     key = models.TextField(max_length=200, default=0)
     is_out = models.BooleanField(default=True)
     login_time = models.DateTimeField(default=timezone.now)
-    logout_time = models.DateTimeField(default=timezone.now)
+    logout_time = models.DateTimeField(null=True)
     class Meta:
         verbose_name_plural = "訪客紀錄"
     def __str__(self):

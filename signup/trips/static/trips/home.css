@@ -1,0 +1,14 @@
+section {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) 
+}
+.div_right_bottom {
+	width:300px;
+	float:right;
+	position:fixed;
+	right:0px;
+	bottom:20px;
+}

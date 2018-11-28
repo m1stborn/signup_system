@@ -3,36 +3,50 @@
 <html>
 
 <head>
-    <title>Instascan &ndash; Demo</title>
+    <title>訪客簽退流程</title>
     <script type="text/javascript" src="{% static "adapter.min.js" %}"></script>
     <script src="{% static "jquery.min.js" %}"></script>
     <script type="text/javascript" src="{% static "vue.min.js" %}"></script>
     <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
     <link rel="stylesheet" href="{% static "bootstrap.min.css"%}" >
+    <link rel="stylesheet" href="{% static "trips/logout.css"%}">
+    <script type="text/javascript" src="{% static "trips/checkID.js"%}"></script>
 </head>
 
-<!-- <body alink="#FF0000" bgcolor="#D0ECD0" link="#0000EE" text="#000000" vlink="#551A8B"> -->
-<body style="background-color:#CCCCCC;">
+
+
+
+
+
+<body onload="ShowTime()" style="background-color:#CCCCCC;">
+    <div class="div_right_top"><a href="/">回首頁</a></div>
     <center>
-    <div id="app" style="height:100vh; margin:10vh; ">
-        <div class="sidebar">
-            <section class="scans">
-                <h2>請掃描識別證後方的QR code</h2>
-                <!-- print content -->
-                <!-- <ul v-if="scans.length === 0">
+        <div id="app" style="height:100vh; margin:10vh;">
+            <div class="sidebar">
+                <section class="scans">
+                    <h2>請掃描識別證後方的QR code</h2><!-- print content -->
+                    <!-- <ul v-if="scans.length === 0">
                     <li class="empty">No scans yet</li>
                 </ul>
                 <transition-group name="scans" tag="ul">
                     <li v-for="scan in scans" :key="scan.date" :title="scan.content">{ scan.content }</li>
                 </transition-group> -->
-            </section>
+                </section>
+            </div>
+            <div class="preview-container">
+                <video id="preview"></video>
+            </div>
         </div>
-
-        <div class="preview-container">
-            <video id="preview"></video>
-        </div>
-    </div>
     </center>
+    <div class="div_right_bottom" id="showbox"></div>
+</body>
+
+
+
+
+
+
+
 
     <script type="text/javascript">
         var app = new Vue({
@@ -88,7 +102,8 @@
         },
         methods: {}
     });
+
+
     </script>
-</body>
 
 </html>
