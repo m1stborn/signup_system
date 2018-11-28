@@ -34,8 +34,9 @@ def login(request):
 		#get request.POST and setup
 		ID = request.session['ID']
 		visitor = Visitors.objects.get(personal_ID=ID)
-		Name = visitor.name
-		Company = visitor.org_ID
+		Name = Visitors.objects.get(personal_ID=ID)
+		print(Name.org_ID)
+		Company = Organizations.objects.get(org_name=Name.org_ID.org_name)
 		Purpose = request.POST['purpose']
 		Signature = request.POST['url']
 		Visit_area = request.POST['visit_area']
@@ -60,11 +61,12 @@ def login(request):
 		if result:
 			print("Name")
 			Visit_logs.objects.filter(name=Name, is_out=False).update(is_out=True, logout_time=Logout_time)
+		print("here")
 		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
 		print(Name, "key is", Key)
-		return HttpResponse(json.dumps({'name': Name}), content_type="application/json")
+		return HttpResponse(json.dumps({'name': Name.name}), content_type="application/json")
 	return render(request, 'trips/login.html',{})
 
 def addID(request):
@@ -105,11 +107,6 @@ def addID(request):
 	all_objects = Organizations.objects.all()
 	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
-def query(request):
-	online = Visit_logs.objects.all().filter(is_out = False)
-	print(online)
-	return render(request, 'trips/query.html' ,{'visit_logs':online})
-	
 def logout(request):
 	if request.method == "POST":
 		Logout_time = timezone.localtime()
@@ -122,25 +119,26 @@ def logout(request):
 		except Visit_logs.DoesNotExist:
 			result = None
 		if result:
-			name = result.name
-			ID = Visitors.objects.get(name=name).personal_ID
+			Name = result.name
+			ID = Name.personal_ID
 			if not request.session.session_key:
 				request.session.create()	
 			request.session['ID'] = ID
 			if ID[-4:] == ID_lastfour:
 				check = True
-				print(name, "use right qrcode and key is", Key)
-				log = Visit_logs.objects.filter(name=name).order_by('-logout_time')[0]
+				print(Name.name, "use right qrcode and key is", Key)
+				log = Visit_logs.objects.filter(name=Name).order_by('-login_time')[0]
 				log.logout_time = Logout_time
 				log.is_out = True
 				log.save()
-		print(name, check)
+				name = Name.name
+		print(name,check)
 		return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
 def confirm(request):
 	ID = request.session['ID']
-	name = Visitors.objects.get(personal_ID=ID).name
+	name = Visitors.objects.get(personal_ID=ID)
 	try: 
 		result = Visit_logs.objects.get(name=name, is_out=False)
 	except Visitors.DoesNotExist:
@@ -149,7 +147,7 @@ def confirm(request):
 
 def logout_confirm(request):
 	ID = request.session['ID']
-	name = Visitors.objects.get(personal_ID=ID).name
+	name = Visitors.objects.get(personal_ID=ID)
 	try: 
 		result = Visit_logs.objects.filter(name=name).order_by('-logout_time')[0]
 		print(result)
