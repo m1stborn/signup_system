@@ -29,4 +29,4 @@ urlpatterns = [
 admin.site.site_header = "管理人員頁面"
 admin.site.site_title = "管理人員"
 admin.site.site_url = "http://admin.com/"
-admin.site.index_title = "訪客系統管理"
+admin.site.index_title = "訪客簽到系統管理"

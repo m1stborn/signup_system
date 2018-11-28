@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'trips',
-	"sslserver",
+	'sslserver',
     'daterange_filter',
 ]
 
@@ -90,6 +90,13 @@ DATABASES = {
         'PASSWORD': 'password',#填
         'HOST': 'localhost',
         'PORT': '',
+        # #centOS start
+        # 'NAME': 'STPIVisitor',
+        # 'USER': 'stpi',#填
+        # 'PASSWORD': 'StpiVisitorNTU',#填
+        # 'HOST': '172.19.0.2',
+        # 'PORT': '3306',
+        # #end
     }
 }
 

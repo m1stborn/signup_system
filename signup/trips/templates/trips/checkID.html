@@ -1,193 +1,43 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<style type="text/css">
-section {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%) 
-}
-</style>
+
 <head>
-   <title></title>
+   <title>訪客簽到流程</title>
    <script src="{% static "jquery.min.js"%}"></script>
    <script src="{% static "jq-signature.js"%}"></script>
    <script src="{% static "jq-signature.min.js"%}"></script>
    <script type="text/javascript" src="{% static "adapter.min.js"%}"></script>
    <script type="text/javascript" src="{% static "vue.min.js"%}"></script>
    <script type="text/javascript" src="{% static "instascan.min.js"%}"></script>
-<!--    <link rel="stylesheet" href="{% static "bootstrap.min.css"%}" >
-   <link rel="stylesheet" href="{% static "grayscale.css"%}" > -->
-
-
-
+   <link rel="stylesheet" href="{% static "trips/checkID.css"%}">
+   <script type="text/javascript" src="{% static "trips/checkID.js"%}"></script>
 </head>
-<style type="text/css">
-section {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%) 
-}
 
-/****** LOGIN MODAL ******/
-.loginmodal-container {
-  padding: 30px;
-  max-width: 500px;
-  width: 100% !important;
-  height: 300px;
-  background-color: #F7F7F7;
-  margin: 0 auto;
-  border-radius: 2px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  font-family: roboto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%)
-}
-
-.loginmodal-container h1 {
-  text-align: center;
-  font-size: 1.8em;
-  font-family: roboto;
-}
-
-.loginmodal-container input[type=submit] {
-  width: 100%;
-  display: block;
-  margin-bottom: 10px;
-  position: relative;
-}
-
-.loginmodal-container input[type=text], input[type=password] {
-  height: 44px;
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 10px;
-  -webkit-appearance: none;
-  background: #fff;
-  border: 1px solid #d9d9d9;
-  border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
-  padding: 0 8px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-
-.loginmodal-container input[type=text]:hover, input[type=password]:hover {
-  border: 1px solid #b9b9b9;
-  border-top: 1px solid #a0a0a0;
-  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.loginmodal {
-  text-align: center;
-  font-size: 14px;
-  font-family: 'Arial', sans-serif;
-  font-weight: 700;
-  height: 36px;
-  padding: 0 8px;
-/* border-radius: 3px; */
-/* -webkit-user-select: none;
-  user-select: none; */
-}
-
-.loginmodal-submit {
-  /* border: 1px solid #3079ed; */
-  border: 0px;
-  color: #fff;
-  text-shadow: 0 1px rgba(0,0,0,0.1); 
-  background-color: #4d90fe;
-  padding: 17px 0px;
-  font-family: roboto;
-  font-size: 14px;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
-}
-
-.loginmodal-submit:hover {
-  /* border: 1px solid #2f5bb7; */
-  border: 0px;
-  text-shadow: 0 1px rgba(0,0,0,0.3);
-  background-color: #357ae8;
-  /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
-}
-
-.loginmodal-container a {
-  text-decoration: none;
-  color: #666;
-  font-weight: 400;
-  text-align: center;
-  display: inline-block;
-  opacity: 0.6;
-  transition: opacity ease 0.5s;
-} 
-
-.login-help{
-  font-size: 12px;
-}
-</style>
-<body style="background-color:#CCCCCC;">
-    
-   
-
-
-   <div class="loginmodal-container">
-      <h1>請輸入身分證字號</h1><br>
-      <input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" placeholder="A123456789">
-      <input id="send" type="submit" name="login" class="login loginmodal-submit" value="送出">               
-      <div class="login-help">
-      第一次來訪請<a href="/addID" style="text-decoration:underline;">新增</a>
-      </div>
-   </div>
-
-
-
-<!-- 	<section>
-	<table>
-      <tr><td style="font-size:45px;">
-         請輸入身分證字號：</td>
-         <td><input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" style="width: 400px; height: 80px;font-size:45px;"></td>
-         <td><button id="send" style="font-size:35px;">送出</button></td></tr>
-         <tr><td></td><td></td><td align="center"><a href="/addID" style="font-size:35px;">新增</a></td></tr> 
-   
-	</table>
-	</section> -->
-
-
-<!-- <div id="contact">
-  <div class="container">
-    <div class="head">
-      <h2>請輸入身分證字號</h2>
-    </div>
-    <input id="ID" name="ID" size="20" type="text" maxlength="10" minlength="10" ></br>
-    <input  type="email" name="email" placeholder="Email" /><br />
-    <textarea type="text" name="message" placeholder="Message"></textarea><br />
-    <div class="message">Message Sent</div>
-    <button id="send" type="submit">送出</button>
-    <button id="send" type="submit">新增</button>
+<body onload="ShowTime()" style="background-color:#CCCCCC;">
+  <div class="div_right_top">
+    <a href="/">回首頁</a>
   </div>
-</div> -->
+  <div class="loginmodal-container">
+    <h1>請輸入身分證字號</h1><br>
+    <input id="ID" maxlength="10" name="ID" placeholder="A123456789" size="20" type="text"> <input class="login loginmodal-submit" id="send" name="login" type="submit" value="送出">
+    <div class="login-help">
+      第一次來訪請<a href="/addID" style="text-decoration:underline;">新增</a>
+    </div>
+  </div>
+<div id="showbox" class="div_right_bottom"></div>
+</body>
 
-
-
-
-<script type="text/javascript">
-
-</script>
 <script type="text/javascript">
    $(document).ready(function() {
        $("#send").click(function() {
-           var e = document.getElementById("ID");
-           var value = e.value;
-           $.ajax({
+           var value = document.getElementById("ID").value;
+           if(!checkID(value)){
+            document.getElementById("ID").value = "";
+            alert("請輸入正確的身分證字號");
+           }
+           else{
+            $.ajax({
                type: "post",
                data: {
                    ID: value,
@@ -210,42 +60,14 @@ section {
                    }
                }
            });
+
+           }//end else
+
        });
        $("#add").click(function() {
          location.href = "/addID";
        });
    });
-
 </script>
-<!-- <script type="text/javascript">
-   // When the browser is ready...
-  $(function() {
-    // validate
-    $("#contact").validate({
-        // Set the validation rules
-        rules: {
-            name: "required",
-            email: {
-                required: true,
-                email: true
-            },
-            message: "required",
-        },
-        // Specify the validation error messages
-        messages: {
-            name: "Please enter your name",
-            email: "Please enter a valid email address",
-            message: "Please enter a message",
-        },
-        // submit handler
-        submitHandler: function(form) {
-          //form.submit();
-           $(".message").show();
-           $(".message").fadeOut(4500);
-        }
-    });
-  });
-</script> -->
-</body>
 
 </html>

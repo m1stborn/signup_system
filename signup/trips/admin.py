@@ -30,7 +30,7 @@ class Visit_logAdmin(admin.ModelAdmin):
 	
 	# date_hierarchy = 'login_time'
 	ordering = ('-login_time',)
-	search_fields = ('name','company',)
+	# search_fields = ('name','company',)
 	list_display = ('name' ,'company','login_time','logout_time','is_out')
 	# list_editable = ('login_time','logout_time')
 	list_filter = (('login_time'),'is_out','host')
@@ -41,7 +41,7 @@ class Visit_logAdmin(admin.ModelAdmin):
 
 	def make_out(self, request, queryset):
 		queryset.update(is_out=True)
-	make_out.short_description = "訪客登出"
+	make_out.short_description = "登出所選的 訪客紀錄"
 	# readonly_fields = ['company','visit_area','purpose','login_time','host']
 	class Media:
 		js = ("autorefresh.js",)
