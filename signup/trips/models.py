@@ -82,6 +82,8 @@ class Visit_logs(models.Model):
 class Organizations(models.Model):
 	org_name = models.CharField(max_length = 50)
 	FAX = models.CharField(max_length = 20)
+	class Meta:
+		verbose_name_plural = "公司名單"
 	def __str__(self):
 		return self.org_name
 		
@@ -91,5 +93,7 @@ class Visitors(models.Model):
 	email = models.EmailField(default='example@gmail.com')
 	personal_ID = models.CharField(max_length = 10,blank = True)
 	org_ID = models.ForeignKey(Organizations, on_delete=models.CASCADE, null=True)
+	class Meta:
+		verbose_name_plural = "訪客名單"
 	def __str__(self):
 		return self.name
