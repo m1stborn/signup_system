@@ -81,17 +81,22 @@ class Visit_logAdmin(admin.ModelAdmin,ExportCsvMixin):
 	# date_hierarchy = 'login_time'
 	ordering = ('-login_time',)
 	# search_fields = ('name','company',)
-	list_display = ('name' ,'company','login_time','logout_time','key','is_out')
+	list_display = ('name' ,'company','login_time','logout_time','key','is_out','is_confirm')
 	# list_editable = ('login_time','logout_time')
-	list_filter = (('login_time'),'is_out','host')
+	list_filter = (('login_time',(DateRangeFilter)),'is_out','host')
 	readonly_fields = ('name','company',)
-	fields = ('name','company','purpose','visit_area','host','key','is_out','login_time','logout_time',)
+	fields = ('name','company','purpose','visit_area','host','key','is_out','login_time','logout_time','is_confirm','host_key','alter_key')
+	
 	# exclude = ('signature',)
-	actions = ['make_logs_out','export_as_csv',]
+	actions = ['make_logs_out','export_as_csv','confirm_logs']
 
 	def make_logs_out(self, request, queryset):
 		queryset.update(is_out=True, logout_time=timezone.localtime())
 	make_logs_out.short_description = "將所選的訪客紀錄簽退"
+	
+	def confirm_logs(self, request, queryset):
+		queryset.update(is_confirm=True)
+	confirm_logs.short_description = "確認所選的訪客紀錄"
 	# def has_delete_permission(self, request, obj=None):
 	# 	return False
 	# readonly_fields = ['company','visit_area','purpose','login_time','host']

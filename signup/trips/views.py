@@ -107,38 +107,99 @@ def addID(request):
 	all_objects = Organizations.objects.all()
 	return render(request, 'trips/addID.html', {'all_objects':all_objects})
 
+# def logout(request):
+# 	if request.method == "POST":
+# 		Logout_time = timezone.localtime()
+# 		Key = request.POST['key']
+# 		ID_lastfour = request.POST['ID']
+# 		name = "Not found"
+# 		check = False
+# 		try: 
+# 			result = Visit_logs.objects.get(key=Key, is_out=False)
+# 		except Visit_logs.DoesNotExist:
+# 			result = None
+# 		if result:
+# 			Name = result.name
+# 			ID = Name.personal_ID
+# 			if not request.session.session_key:
+# 				request.session.create()	
+# 			request.session['ID'] = ID
+# 			if ID[-4:] == ID_lastfour:
+# 				check = True
+# 				print(Name.name, "use right qrcode and key is", Key)
+# 				log = Visit_logs.objects.filter(name=Name).order_by('-login_time')[0]
+# 				log.logout_time = Logout_time
+# 				log.is_out = True
+# 				log.save()
+# 				name = Name.name
+# 		print(name,check)
+# 		return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
+# 	return render(request, 'trips/logout.html',{})
+
 def logout(request):
 	if request.method == "POST":
-		Logout_time = timezone.localtime()
-		Key = request.POST['key']
 		ID_lastfour = request.POST['ID']
-		name = "Not found"
-		check = False
-		try: 
-			result = Visit_logs.objects.get(key=Key, is_out=False)
-		except Visit_logs.DoesNotExist:
-			result = None
-		if result:
-			Name = result.name
-			ID = Name.personal_ID
-			if not request.session.session_key:
-				request.session.create()	
-			request.session['ID'] = ID
-			if ID[-4:] == ID_lastfour:
-				check = True
-				print(Name.name, "use right qrcode and key is", Key)
-				log = Visit_logs.objects.filter(name=Name).order_by('-login_time')[0]
-				log.logout_time = Logout_time
-				log.is_out = True
-				log.save()
+		if ID_lastfour == "null" :
+			name = "Not found"
+			Key = request.POST['key']
+			try:
+				result = Visit_logs.objects.get(key=Key, is_out=False)
+			except Visit_logs.DoesNotExist:
+				result = None
+			if result:
+				Name = result.name
 				name = Name.name
-		print(name,check)
-		return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
+				print("got", name)
+			return HttpResponse(json.dumps({'name': name}), content_type="application/json")
+		else :
+			Logout_time = timezone.localtime()
+			Key = request.POST['key']
+			name = "Not found"
+			check = False
+			try: 
+				result = Visit_logs.objects.get(key=Key, is_out=False)
+			except Visit_logs.DoesNotExist:
+				result = None
+			if result:
+				Name = result.name
+				ID = Name.personal_ID
+				if not request.session.session_key:
+					request.session.create()	
+				request.session['ID'] = ID
+				if ID[-4:] == ID_lastfour:
+					check = True
+					print(Name.name, "use right qrcode and key is", Key)
+					log = Visit_logs.objects.filter(name=Name).order_by('-login_time')[0]
+					log.logout_time = Logout_time
+					log.is_out = True
+					log.save()
+					name = Name.name
+			print(name,check)
+			return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
 def confirm(request):
 	ID = request.session['ID']
+	print("my ID is", ID)
+	host = ""
 	name = Visitors.objects.get(personal_ID=ID)
+	if request.method == "POST":
+		host = "Not found"
+		key = int(request.POST['key'])
+		result = Visit_logs.objects.get(name=name, is_out=False)
+		print("host key is", key ,"and logs'host is", result.host)
+		if key <= 20:
+			if key == result.host:
+				host = "同仁"
+				result.host_key = key
+				result.is_confirm = True
+			else:
+				host = "代理同仁"
+				result.alter_key = key
+		print("host is", host)
+		print(result.is_confirm)
+		result.save()
+		return HttpResponse(json.dumps({'host': host}), content_type="application/json")
 	try: 
 		result = Visit_logs.objects.get(name=name, is_out=False)
 	except Visitors.DoesNotExist:
@@ -153,7 +214,7 @@ def logout_confirm(request):
 		print(result)
 	except Visitors.DoesNotExist:
 		result = None
-	return render(request, 'trips/confirm.html',{'result':result})
+	return render(request, 'trips/logout_confirm.html',{'result':result})
 
 
 

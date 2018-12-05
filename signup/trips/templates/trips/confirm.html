@@ -3,20 +3,30 @@
 <html>
 <head>
     <link rel="stylesheet" href="{% static "trips/confirm.css"%}">
-    <script type="text/javascript" src="{% static "trips/confirm.js"%}"></script>
+<!--     <script type="text/javascript" src="{% static "trips/confirm.js"%}"></script> -->
+    <script type="text/javascript" src="{% static "adapter.min.js" %}"></script>
+    <script src="{% static "jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "vue.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "instascan.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "trips/checkID.js"%}"></script>
 </head>
 
-<body style="background-color:#CCCCCC;">
-  <div id = "show">
-  </div>
-  <div style="background-color:#FFD382;padding:10px;margin-bottom:5px;">
+
+
+<body onload="ShowTime()" style="background-color:#CCCCCC;">
+    <div class="div_right_top">
+        <a href="/">回首頁</a>
+    </div>
+<!--   <div id = "show">
+  </div> -->
+<!--   <div style="background-color:#FFD382;padding:10px;margin-bottom:5px;">
   	<ul>
   		<li>本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</li>
   		<li>本中心為達場所進出人員的安全管理之目的，搜集個人資料之類別為C001及C061，包含訪客的姓名、服務單位、及聯絡電話等資料。本中心將於營運期間及地區內以訪客個資作為安全管理之用，必要時，將利用訪客電話進行聯絡。訪客可以電洽本中心行使個資法第3條的當事人權利之程序。</li>
   	</ul>
   	
-  </div>
-  <div>
+  </div> -->
+  <div style="text-align:center;">
   	<h1>請確認資料</h1>
   <table>
     <tr>
@@ -54,6 +64,68 @@
     
   </table>
   </div>
+  <center>
+    <h1>請相關同仁確認拜訪</h1>
+    <div class="preview-container">
+      <video id="preview"></video>
+    </div>
+  </center>
+  <div class="div_right_bottom" id="showbox"></div>
+</div>
 
 </body>
+        <script type="text/javascript">
+        var app = new Vue({
+        delimiters: ['{', '}'],
+        el: '#app',
+        data: {
+            scanner: null,
+            activeCameraId: null,
+            cameras: [],
+            scans: []
+        },
+        mounted: function() {
+            var self = this;
+            var pk = document.getElementById("myVar");
+            self.scanner = new Instascan.Scanner({
+                video: document.getElementById('preview'),
+                scanPeriod: 5
+            });
+            self.scanner.addListener('scan', function(content, image) {
+                self.scans.unshift({
+                    date: +(Date.now()),
+                    content: content
+                });
+                $.post("", {
+                        'key': content,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    function(data, status) {
+                        if (data.host != "Not found") {
+                            alert(data.host + "已確認拜訪");
+                            location.href = "/";
+                        } else {
+                            alert("請輸入正確的 QR code ");
+                            return false;
+                        }
+                    });
+            });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                self.cameras = cameras;
+                if (cameras.length > 0) {
+                    self.activeCameraId = cameras[0].id;
+                    self.scanner.start(cameras[0]);
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
+
+        },
+        methods: {}
+    });
+
+
+    </script>
 </html>
