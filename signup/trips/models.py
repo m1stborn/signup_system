@@ -98,7 +98,10 @@ class Visit_logs(models.Model):
     key = models.TextField(verbose_name="識別號碼",max_length=200, default=0)
     is_out = models.BooleanField(verbose_name="已簽退",default=True)
     login_time = models.DateTimeField(verbose_name="進入時間",default=timezone.now)
-    logout_time = models.DateTimeField(verbose_name="離開時間",null=True)
+    logout_time = models.DateTimeField(verbose_name="離開時間",null=True, blank=True)
+    host_key = models.TextField(verbose_name="確認拜訪同仁",max_length=200, null=True,blank=True)
+    alter_key = models.TextField(verbose_name="代理確認拜訪同仁",max_length=200, null=True,blank=True)
+    is_confirm = models.BooleanField(verbose_name="確認拜訪",default=False)
     class Meta:
         verbose_name_plural = "訪客紀錄"
     def __str__(self):

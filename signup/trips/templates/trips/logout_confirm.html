@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static "trips/confirm.css"%}">
+    <script type="text/javascript" src="{% static "trips/confirm.js"%}"></script>
+</head>
+
+<body style="background-color:#CCCCCC;">
+  <div id = "show">
+  </div>
+  <div style="background-color:#FFD382;padding:10px;margin-bottom:5px;">
+  	<ul>
+  		<li>本人已詳閱並瞭解政策中心<u>資訊系統組與電腦機房門禁管理辦法</u>相關規定與注意事項。</li>
+  		<li>本中心為達場所進出人員的安全管理之目的，搜集個人資料之類別為C001及C061，包含訪客的姓名、服務單位、及聯絡電話等資料。本中心將於營運期間及地區內以訪客個資作為安全管理之用，必要時，將利用訪客電話進行聯絡。訪客可以電洽本中心行使個資法第3條的當事人權利之程序。</li>
+  	</ul>
+  	
+  </div>
+  <div>
+  	<h1>請確認資料</h1>
+  <table>
+    <tr>
+      <th>姓名</th>
+      <td>{{result.name}}</td>
+    </tr>
+    <tr>
+      <th>服務單位</th>
+      <td>{{result.company}}</td>
+    </tr>
+    <tr>
+      <th>拜訪區域</th>
+      <td>{{result.get_visit_area_display}}</td>
+    </tr>
+    <tr>
+      <th>拜訪目的</th>
+      <td>{{result.get_purpose_display}}</td>
+    </tr>
+    <tr>
+      <th>接洽同仁</th>
+      <td>{{result.get_host_display}}</td>
+    </tr>
+    <tr>
+      <th>簽到時間</th>
+      <td><font color="red">{{result.login_time|date:'Y-m-d H:i'}}</font></td>
+    </tr>
+     <tr>
+      <th>簽退時間</th>
+      {% if result.logout_time|date:'Y-m-d H:i:s' == "" %}
+      <td>尚未簽退</font></td>
+      {% else %}
+      <td><font color="red">{{result.logout_time|date:'Y-m-d H:i'}}</font></td>
+      {% endif %}
+    </tr> 
+    
+  </table>
+</div>
+</body>
+</html>

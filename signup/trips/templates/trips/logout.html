@@ -42,7 +42,7 @@
 </body>
 
 
-    <script type="text/javascript">
+<!--     <script type="text/javascript">
         var app = new Vue({
         delimiters: ['{', '}'],
         el: '#app',
@@ -77,6 +77,77 @@
                             location.href = "/logout_confirm";
                         } else {
                             alert("請輸入 正確驗證碼 及 QR code 以完成簽退流程");
+                            return false;
+                        }
+                    });
+            });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                self.cameras = cameras;
+                if (cameras.length > 0) {
+                    self.activeCameraId = cameras[0].id;
+                    self.scanner.start(cameras[0]);
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
+
+        },
+        methods: {}
+    });
+
+
+    </script> -->
+
+        <script type="text/javascript">
+        var app = new Vue({
+        delimiters: ['{', '}'],
+        el: '#app',
+        data: {
+            scanner: null,
+            activeCameraId: null,
+            cameras: [],
+            scans: []
+        },
+        mounted: function() {
+            var self = this;
+            var pk = document.getElementById("myVar");
+            self.scanner = new Instascan.Scanner({
+                video: document.getElementById('preview'),
+                scanPeriod: 5
+            });
+            self.scanner.addListener('scan', function(content, image) {
+                self.scans.unshift({
+                    date: +(Date.now()),
+                    content: content
+                });
+                var check = "null";
+                $.post("", {
+                        'ID': check,
+                        'key': content,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    function(data, status) {
+                        if (data.name != "Not found") {
+                            check = prompt(data.name+"您好，請輸入身分證後四碼以完成簽退流程");
+                            $.post("",{
+                                'ID':check,
+                                'key':content,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            function(data, status){
+                                if(data.check){
+                                    var message = data.name + " 簽退成功";
+                                    alert(message);
+                                    location.href = "/logout_confirm";
+                                } else{
+                                    alert("請輸入正確的身分證後四碼")
+                                    return false;
+                                }
+                            });
+                        } else {
+                            alert("請輸入正確的 QR code ");
                             return false;
                         }
                     });
