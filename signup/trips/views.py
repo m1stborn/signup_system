@@ -6,6 +6,11 @@ from datetime import datetime
 from django.template import RequestContext
 import django.utils.timezone as timezone
 import json
+#import sys
+#from importlib import reload
+
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 # Create your views here.
 def home(request):
@@ -35,7 +40,7 @@ def login(request):
 		ID = request.session['ID']
 		visitor = Visitors.objects.get(personal_ID=ID)
 		Name = Visitors.objects.get(personal_ID=ID)
-		print(Name.org_ID)
+		print("Name.org_ID")
 		Company = Organizations.objects.get(org_name=Name.org_ID.org_name)
 		Purpose = request.POST['purpose']
 		Signature = request.POST['url']
@@ -65,7 +70,7 @@ def login(request):
 		#save data
 		log = Visit_logs(name=Name, company=Company, purpose=Purpose, visit_area=Visit_area, signature=Signature, host=Host, login_time=Login_time, key=Key, is_out=Is_out)
 		log.save()
-		print(Name, "key is", Key)
+		print("Name", "key is", Key)
 		return HttpResponse(json.dumps({'name': Name.name}), content_type="application/json")
 	return render(request, 'trips/login.html',{})
 
@@ -149,7 +154,7 @@ def logout(request):
 			if result:
 				Name = result.name
 				name = Name.name
-				print("got", name)
+				print("got", "name")
 			return HttpResponse(json.dumps({'name': name}), content_type="application/json")
 		else :
 			Logout_time = timezone.localtime()
@@ -168,13 +173,13 @@ def logout(request):
 				request.session['ID'] = ID
 				if ID[-4:] == ID_lastfour:
 					check = True
-					print(Name.name, "use right qrcode and key is", Key)
+					print("Name.name", "use right qrcode and key is", Key)
 					log = Visit_logs.objects.filter(name=Name).order_by('-login_time')[0]
 					log.logout_time = Logout_time
 					log.is_out = True
 					log.save()
 					name = Name.name
-			print(name,check)
+			print("name,check")
 			return HttpResponse(json.dumps({'name': name, 'check': check}), content_type="application/json")
 	return render(request, 'trips/logout.html',{})
 
@@ -190,11 +195,11 @@ def confirm(request):
 		print("host key is", key ,"and logs'host is", result.host)
 		if key <= 20:
 			if key == result.host:
-				host = "同仁"
+				host = "host"
 				result.host_key = key
 				result.is_confirm = True
 			else:
-				host = "代理同仁"
+				host = "alter"
 				result.alter_key = key
 		print("host is", host)
 		print(result.is_confirm)
@@ -211,7 +216,7 @@ def logout_confirm(request):
 	name = Visitors.objects.get(personal_ID=ID)
 	try: 
 		result = Visit_logs.objects.filter(name=name).order_by('-logout_time')[0]
-		print(result)
+		print("result")
 	except Visitors.DoesNotExist:
 		result = None
 	return render(request, 'trips/logout_confirm.html',{'result':result})

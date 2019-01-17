@@ -60,6 +60,7 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -85,18 +86,18 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'signup_system',
-        'USER': 'admin',#填
-        'PASSWORD': 'password',#填
-        'HOST': 'localhost',
-        'PORT': '',
-        # #centOS start
-        # 'NAME': 'STPIVisitor',
-        # 'USER': 'stpi',#填
-        # 'PASSWORD': 'StpiVisitorNTU',#填
-        # 'HOST': '172.19.0.2',
-        # 'PORT': '3306',
-        # #end
+        #'NAME': 'signup_system',
+        #'USER': 'admin',#填
+        #'PASSWORD': 'password',#填
+        #'HOST': 'localhost',
+        #'PORT': '',
+         #centOS start
+         'NAME': 'STPIVisitor',
+         'USER': 'stpi',#填
+         'PASSWORD': 'StpiVisitorNTU',#填
+         'HOST': '172.19.0.2',
+         'PORT': '3306',
+         #end
     }
 }
 

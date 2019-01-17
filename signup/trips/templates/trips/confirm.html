@@ -27,45 +27,29 @@
   	
   </div> -->
   <div style="text-align:center;">
-  	<h1>請確認資料</h1>
+  <h2>請相關同仁確認拜訪及資料</h2>
   <table>
     <tr>
       <th>姓名</th>
       <td>{{result.name}}</td>
-    </tr>
-    <tr>
       <th>服務單位</th>
       <td>{{result.company}}</td>
-    </tr>
-    <tr>
       <th>拜訪區域</th>
       <td>{{result.get_visit_area_display}}</td>
     </tr>
-    <tr>
+    <tr> 
       <th>拜訪目的</th>
       <td>{{result.get_purpose_display}}</td>
-    </tr>
-    <tr>
       <th>接洽同仁</th>
       <td>{{result.get_host_display}}</td>
-    </tr>
-    <tr>
       <th>簽到時間</th>
       <td><font color="red">{{result.login_time|date:'Y-m-d H:i'}}</font></td>
     </tr>
-     <tr>
-      <th>簽退時間</th>
-      {% if result.logout_time|date:'Y-m-d H:i:s' == "" %}
-      <td>尚未簽退</font></td>
-      {% else %}
-      <td><font color="red">{{result.logout_time|date:'Y-m-d H:i'}}</font></td>
-      {% endif %}
-    </tr> 
-    
+
   </table>
   </div>
   <center>
-    <h1>請相關同仁確認拜訪</h1>
+    <h5></h5>
     <div class="preview-container">
       <video id="preview"></video>
     </div>
@@ -102,8 +86,13 @@
                     },
                     function(data, status) {
                         if (data.host != "Not found") {
-                            alert(data.host + "已確認拜訪");
-                            location.href = "/";
+                            if ( data.host=="host") {
+                            	alert("同仁已確認拜訪");
+                                location.href = "/";
+                            } else {
+           			alert("代理同仁已確認拜訪");
+				location.href = "/";
+			    }
                         } else {
                             alert("請輸入正確的 QR code ");
                             return false;
